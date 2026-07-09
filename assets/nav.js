@@ -33,7 +33,7 @@
 
         var path = window.location.pathname.split('/').pop() || 'index.html';
         var nav = document.createElement('nav');
-        nav.className = 'topnav';
+        nav.className = 'sidenav';
 
         navItems.forEach(function (item) {
             var a = document.createElement('a');
@@ -45,7 +45,14 @@
             nav.appendChild(a);
         });
 
-        document.body.insertBefore(nav, document.body.firstChild);
+        /* 将导航与页面内容包裹进一个 flex 布局：左侧导航，右侧内容 */
+        var layout = document.createElement('div');
+        layout.className = 'layout';
+        while (document.body.firstChild) {
+            layout.appendChild(document.body.firstChild);
+        }
+        document.body.appendChild(layout);
+        layout.insertBefore(nav, layout.firstChild);
     }
 
     if (document.body) {
