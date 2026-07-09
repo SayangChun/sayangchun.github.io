@@ -1,0 +1,252 @@
+/* 浅蓝色背景 / 浅色文字（默认白天模式） */
+body {
+    font-family: 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height: 1.8;
+    margin: 0;
+    padding: 40px 20px;
+    background-color: #f7f9fc;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #3498db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.entry {
+    padding: 20px 0;
+    border-bottom: 1px dashed #ecf0f1;
+    margin-bottom: 25px;
+}
+
+.entry:last-child {
+    border-bottom: none;
+}
+
+/* 简历页英文介绍为最后一条记录，去掉其下方虚线 */
+.entry.entry-last {
+    border-bottom: none;
+}
+
+.entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.entry-title {
+    font-size: 1.5em;
+    color: #2980b9;
+    font-weight: bold;
+}
+
+.entry-date {
+    font-size: 0.9em;
+    color: #7f8c8d;
+}
+
+.entry-content p {
+    margin-top: 5px;
+}
+
+/* 技能盒子（简历页沿用） */
+.skills-box {
+    margin: 15px 0;
+    padding: 15px 20px;
+    background: #f4f8fb;
+    border-left: 4px solid #3498db;
+    border-radius: 4px;
+}
+
+.skills-box-title {
+    display: block;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.skills-list {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.skills-list li {
+    margin-bottom: 8px;
+}
+
+/* 底部链接 */
+.footer-description {
+    font-size: 1em;
+    color: #6c7a89;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.footer-links {
+    text-align: center;
+    padding-top: 20px;
+    margin-top: 30px;
+    border-top: 1px solid #ddd;
+}
+
+.footer-links a {
+    color: #3498db;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 0.95em;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+/* 详情页返回链接 */
+.back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #3498db;
+    text-decoration: none;
+    font-size: 0.95em;
+    transition: color 0.3s;
+}
+
+.back-link:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+/* ------------------------------------------------ */
+/* 顶部导航栏                                       */
+/* ------------------------------------------------ */
+.topnav {
+    max-width: 800px;
+    margin: 0 auto 20px auto;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.topnav a {
+    color: #3498db;
+    text-decoration: none;
+    font-size: 0.95em;
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+}
+
+.topnav a:hover {
+    border-color: #3498db;
+    background: rgba(52, 152, 219, 0.08);
+}
+
+.topnav a.active {
+    background: #3498db;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* ------------------------------------------------ */
+/* 黑暗模式：使用 prefers-color-scheme 媒体查询       */
+/* ------------------------------------------------ */
+@media (prefers-color-scheme: dark) {
+
+    body {
+        background-color: #1a1a1a;
+        color: #e0e0e0;
+    }
+
+    .container {
+        background: #2c2c2c;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+        color: #ffffff;
+        border-bottom: 3px solid #3498db;
+    }
+
+    .entry {
+        border-bottom: 1px dashed #444444;
+    }
+
+    .entry-title {
+        color: #92c0f0;
+    }
+
+    .entry-date {
+        color: #b0b0b0;
+    }
+
+    .skills-box {
+        background: #232323;
+        border-left: 4px solid #3498db;
+    }
+
+    .skills-box-title {
+        color: #ffffff;
+    }
+
+    .footer-links {
+        border-top: 1px solid #444;
+    }
+
+    .footer-links a {
+        color: #3498db;
+    }
+
+    .footer-links a:hover {
+        color: #92c0f0;
+    }
+
+    .topnav a {
+        color: #92c0f0;
+    }
+
+    .topnav a:hover {
+        border-color: #92c0f0;
+        background: rgba(146, 192, 240, 0.1);
+    }
+
+    .topnav a.active {
+        background: #3498db;
+        color: #ffffff;
+    }
+
+    .back-link {
+        color: #92c0f0;
+    }
+
+    .back-link:hover {
+        color: #3498db;
+    }
+}
