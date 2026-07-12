@@ -29,7 +29,7 @@
             { file: 'articles.html', label: '文章' },
             { file: 'experience.html', label: '经验' },
             { file: 'achievements.html', label: '成果' },
-            { file: 'updates.html', label: '更新记录' }
+            { file: 'updates.html', label: '动态' }
         ];
 
         var path = window.location.pathname.split('/').pop() || 'index.html';
