@@ -77,6 +77,11 @@ h1 {
     margin-top: 5px;
 }
 
+.empty {
+    color: #7f8c8d;
+    font-style: italic;
+}
+
 /* 技能盒子（简历页沿用） */
 .skills-box {
     margin: 15px 0;
