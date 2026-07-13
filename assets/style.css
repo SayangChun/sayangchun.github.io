@@ -73,6 +73,15 @@ h1 {
     color: #7f8c8d;
 }
 
+.entry-date a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.entry-date a:hover {
+    text-decoration: underline;
+}
+
 .entry-content p {
     margin-top: 5px;
 }
@@ -244,6 +253,14 @@ h1 {
 
     .entry-date {
         color: #b0b0b0;
+    }
+
+    .entry-date a {
+        color: #92c0f0;
+    }
+
+    .entry-date a:hover {
+        color: #3498db;
     }
 
     .skills-box {

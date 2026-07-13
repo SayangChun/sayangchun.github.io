@@ -41,7 +41,8 @@
             var a = document.createElement('a');
             a.href = resolve(item.file);
             a.textContent = item.label;
-            if (path === item.file) {
+            /* en.html 是简历英文版，仍高亮「简历」 */
+            if (path === item.file || (item.file === 'index.html' && path === 'en.html')) {
                 a.className = 'active';
             }
             nav.appendChild(a);
