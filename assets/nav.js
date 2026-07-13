@@ -27,7 +27,7 @@
         var navItems = [
             { file: 'index.html', label: '简历' },
             { file: 'articles.html', label: '文章' },
-            { file: 'experience.html', label: '经验' },
+            { file: 'thinking.html', label: '思考' },
             { file: 'achievements.html', label: '成果' },
             { file: 'updates.html', label: '动态' },
             { file: 'workflow.html', label: '工作流' }
