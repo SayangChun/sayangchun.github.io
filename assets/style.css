@@ -78,6 +78,18 @@ h1 {
     text-decoration: none;
 }
 
+/* AI 辅助标注：整理 / 扩写 / 摘要等 */
+.ai-note {
+    font-size: 0.85em;
+    color: #95a5a6;
+    margin-top: 0.85em;
+    line-height: 1.5;
+}
+
+.ai-note a {
+    color: #7f8c8d;
+}
+
 .entry-date a:hover {
     text-decoration: underline;
 }
@@ -261,6 +273,14 @@ h1 {
 
     .entry-date a:hover {
         color: #3498db;
+    }
+
+    .ai-note {
+        color: #888888;
+    }
+
+    .ai-note a {
+        color: #a0a0a0;
     }
 
     .skills-box {
