@@ -17,7 +17,11 @@
 
         <div class="entry-content">
             <p>围绕 ahr999 定投指标的可视化小站：展示当前指标、价格与 200 日定投成本、拟合价格，并附方法论说明。数据在浏览器端计算，无后端、无需登录。</p>
-            <p>在线体验：<a href="https://ahr999-3d.vercel.app" target="_blank" rel="noopener noreferrer">ahr999-3d.vercel.app</a></p>
+            <p>2026 年参数重拟合后，我做了这个站，方便自己与他人一眼看到「现在处在什么囤币区」。公式为 <code>(Price / 200DCA) × (Price / 拟合价格)</code>；拟合参数 a≈5.5189、b≈-15.8993，起始日 2009-01-03。实时价走 Binance WebSocket（REST 回退），历史用日线 K 线并在本地缓存。</p>
+            <p>它和「囤币难在屏蔽噪音」是一套逻辑：用固定规则看区间，而不是被短线情绪推着走。图表侧也做过 Y 轴刻度与参考线优化，让平坦区间更可读。</p>
+            <p>在线体验：<a href="https://ahr999-3d.vercel.app" target="_blank" rel="noopener noreferrer">ahr999-3d.vercel.app</a><br>
+            仓库：<a href="https://github.com/SayangChun/ahr999-3D" target="_blank" rel="noopener noreferrer">github.com/SayangChun/ahr999-3D</a><br>
+            参考：<a href="http://crypto3d.pro/ahr999" target="_blank" rel="noopener noreferrer">crypto3d.pro/ahr999</a></p>
         </div>
     </div>
 </body>
