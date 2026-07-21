@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 记忆迁移 / SayangChun</title>
+    <link rel="icon" type="image/png" href="../../avatar.png">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <script src="../../assets/nav.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a class="back-link" href="../../achievements.html">&larr; 返回成果</a>
+
+        <h1>AI 记忆迁移</h1>
+        <p class="entry-date">2026年7月</p>
+
+        <div class="entry-content">
+            <p>一次性把<strong>各网页端 AI 的记忆</strong>整理成<strong>本地文件</strong>的工具站。换用新 AI 时，直接把下载的文件发给新 AI 即可恢复人设与记忆——<strong>不经过本站</strong>。定位是<strong>一次性整理 / 导出</strong>，不是需要反复登录的云端记忆库。</p>
+            <p><strong>主路径：</strong>复制本站「导出提示词」→ 在旧 AI 对话里粘贴，让其按格式输出全量人设 + 记忆 → 把回复整段粘贴回本站一键解析导入 →（可选）核对 / 补细节 → 下载 <code>.memory.md</code>，换平台时直接投喂新 AI。API：<code>GET /api/export-prompt</code>、<code>POST /api/import/ai-dump</code>。</p>
+            <p><strong>两种本地文件：</strong>主交付物 <code>.memory.md</code>（Format：<code>ai-memory-pack</code> v2，纯 Markdown，开头自带「给接收本文件的 AI」规则与优先级，可直接投喂）；辅格式 <code>.acm.json</code>（仅当你还要回本站继续改内容时导入）。记忆分类含禁忌、称呼、关系、事实、偏好、习惯、情感、事件、对话摘要等；导出默认只含启用且未过期的条目，按优先级分节。</p>
+            <p><strong>产品边界：</strong>恢复记忆的权威来源是你下载的 <code>.memory.md</code>，不是网站数据库；站内 SQLite 仅服务整理过程，可清。界面为三步向导（从旧 AI 导入 → 核对补充 → 下载带走），支持演示数据与格式说明。</p>
+            <p>技术栈为 Express + Prisma / SQLite + TypeScript，静态前端 + REST API，可本地运行（默认 <code>127.0.0.1:8765</code>）或部署至 Vercel Serverless。</p>
+            <p>在线体验：<a href="https://ai-character-memory.vercel.app" target="_blank" rel="noopener noreferrer">ai-character-memory.vercel.app</a><br>
+            仓库：<a href="https://github.com/SayangChun/ai-character-memory" target="_blank" rel="noopener noreferrer">github.com/SayangChun/ai-character-memory</a></p>
+            <p class="ai-note">说明：产品定位与能力介绍根据仓库 README、<code>docs/portable-format.md</code> 与提交 <code>6b4b4cc</code>（2026-07-21，UI 重写 / AI 导出服务 / 可移植格式文档）由 AI 整理扩写。</p>
+        </div>
+    </div>
+</body>
+</html>
