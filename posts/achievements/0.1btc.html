@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0.1 BTC 囤币记录 / SayangChun</title>
+    <link rel="icon" type="image/png" href="../../avatar.png">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <script src="../../assets/nav.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a class="back-link" href="../../achievements.html">&larr; 返回成果</a>
+
+        <h1>0.1 BTC 囤币记录</h1>
+        <p class="entry-date">2026年7月</p>
+
+        <div class="entry-content">
+            <p>在 GitHub 上公开记录囤积 <strong>0.1 BTC</strong> 的过程：不设独立网站，打开仓库 README 即可看进度条、累计曲线与提现明细。数据驱动、可复现，和「只认真对待能长期自托管的部分」一致。</p>
+            <p><strong>记录范围：</strong>只统计<strong>提现到冷钱包</strong>的比特币；交易所、热钱包、链上未提现部分一律不记入。流程是编辑 <code>data/transactions.csv</code>（日期、到账 BTC、法币成本、备注）→ 运行 <code>python scripts/update_readme.py</code> → 提交推送；脚本自动刷新 README 中的进度总览、Mermaid 累计折线与明细表。</p>
+            <p><strong>图表说明：</strong>以首次购买日 2026-03-27 为作图 0 起点（当时尚未提现到冷钱包）；早期持仓较小时纵轴按持仓放大，避免点贴在底部。GitHub 原生渲染 Mermaid，无需部署网页。</p>
+            <p>截至仓库当前数据：冷钱包累计 <strong>0.005231 / 0.1 BTC</strong>（约 5.23%），1 笔提现，累计投入约 376.84 USD，平均成本约 $72,040 / BTC。</p>
+            <p>仓库：<a href="https://github.com/SayangChun/0.1BTC" target="_blank" rel="noopener noreferrer">github.com/SayangChun/0.1BTC</a></p>
+            <p class="ai-note">说明：项目说明与进度数字根据仓库 README、transactions.csv 与提交 <code>406b7a5</code>（2026-07-21）由 AI 整理扩写；后续以 README 自动生成段为准。</p>
+        </div>
+    </div>
+</body>
+</html>
