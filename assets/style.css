@@ -90,6 +90,18 @@ h1 {
     color: #7f8c8d;
 }
 
+/* AI 补充标签 */
+.ai-tag {
+    font-size: 0.85em;
+    color: #3498db;
+    font-weight: bold;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    padding: 4px 8px;
+    background-color: rgba(52, 152, 219, 0.1);
+    border-left: 3px solid #3498db;
+}
+
 .entry-date a:hover {
     text-decoration: underline;
 }
@@ -281,6 +293,12 @@ h1 {
 
     .ai-note a {
         color: #a0a0a0;
+    }
+
+    .ai-tag {
+        color: #92c0f0;
+        background-color: rgba(146, 192, 240, 0.1);
+        border-left: 3px solid #92c0f0;
     }
 
     .skills-box {
