@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIRE-Agent / SayangChun</title>
+    <link rel="icon" type="image/png" href="../../avatar.png">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <script src="../../assets/nav.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a class="back-link" href="../../achievements.html">&larr; 返回成果</a>
+
+        <h1>FIRE-Agent · 可移植的 AI 财务顾问</h1>
+        <p class="entry-date">2026年9月</p>
+
+        <div class="entry-content">
+            <p>一个<strong>可移植的 AI FIRE 数字员工</strong>：把 FIRE 顾问能力打包成一套知识包，直接运行在你自己已有的 AI 平台上（ChatGPT / Gemini / Claude），<strong>不需要 API Key、不需要服务器、不需要额外订阅</strong>。</p>
+            <p><strong>核心理念：Agent Core ≠ AI Runtime。</strong>指令、方法论、计算公式、风险框架与数据 Schema 与运行平台解耦，换平台只需要换一份 adapter 说明；数据留在自己的会话与文件里，不做外部存储。</p>
+            <p><strong>能力覆盖：</strong>FIRE 数值（年支出 ÷ 提取率）、FIRE 进度（当前资产 ÷ FIRE 数值）、储蓄率对时间线的影响、FIRE 年龄复利模拟、保守 / 基准 / 乐观三档情景、<strong>10,000 次蒙特卡洛</strong>成功概率、Lean / Regular / Coast / Barista / Fat 等 FIRE 类型、序列风险 / 通胀 / 长寿 / 集中度等风险分析、策略取舍的定量对比，以及「45 岁退休需要什么」的<strong>逆向规划</strong>。</p>
+            <p><strong>工程取向：</strong>确定性数学交给代码算，而不是让 LLM 估；<code>core/</code> 存放指令、方法论、公式、风险框架、Schema 与 5 个示例案例，<code>adapters/</code> 提供四个平台的接入指南，<code>tools/</code> 为 Python 计算器，<code>templates/</code> 给出财务画像模板，并附 <strong>86 项单元测试</strong>。</p>
+            <p><strong>使用方式：</strong>选平台 adapter → 建 AI Agent → 上传 <code>core/instructions.md</code> → 上传方法论 / 计算公式 / 风险知识 → 上传填好的财务画像 → 直接对话「帮我分析我的 FIRE 进度」。</p>
+            <p>仓库：<a href="https://github.com/SayangChun/FIRE-Agent" target="_blank" rel="noopener noreferrer">github.com/SayangChun/FIRE-Agent</a></p>
+            <p class="ai-note">说明：项目说明根据仓库 README、目录结构与 2026-09-08 提交记录由 AI 整理扩写；后续以仓库正文为准。本项目为个人财务规划与情景分析工具，不构成投资、税务、法律或医疗建议。</p>
+        </div>
+    </div>
+</body>
+</html>

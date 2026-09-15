@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal AI Memory Vault / SayangChun</title>
+    <link rel="icon" type="image/png" href="../../avatar.png">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <script src="../../assets/nav.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a class="back-link" href="../../achievements.html">&larr; 返回成果</a>
+
+        <h1>Universal AI Memory Vault</h1>
+        <p class="entry-date">2026年8月</p>
+
+        <div class="entry-content">
+            <p>一个<strong>厂商中立的个人长期记忆层</strong>：Claude、ChatGPT 等 AI 通过 <strong>MCP</strong>（Streamable HTTP + OAuth）读写<strong>同一份</strong>记忆库，而数据归属、访问控制与变更审计都在自己手里。解决的是换平台就要重新「教」一遍 AI 的问题——记忆不再被锁在某一家的账号里。</p>
+            <p><strong>定位克制：</strong>项目只做「存储 + 检索」，刻意<strong>不</strong>包含 AI 对话、<strong>不</strong>替 AI 决定该记什么、<strong>不</strong>抓浏览器会话。记忆智能属于调用它的 AI，这一层只负责把数据管好。</p>
+            <p><strong>设计要点：</strong>单用户私有保险库，没有注册与登录，全部数据归属固定身份；记忆类型厂商中立（<code>fact</code> / <code>preference</code> / <code>habit</code> / <code>goal</code> / <code>life_event</code> / <code>relationship</code> / <code>worldview</code> / <code>project</code> 等，没有 ChatGPTMemory / ClaudeMemory 这类分叉）；每次变更都版本化并快照旧内容，全部动作写入 <code>audit_logs</code>；数据访问统一走 Postgres <code>SECURITY DEFINER</code> RPC 并带显式 <code>user_id</code> 过滤，跨用户读取不可能发生；记忆返回给 AI 时会被标记为「不可信数据」，服务器从不执行记忆内容。</p>
+            <p><strong>MCP 工具：</strong><code>memory_search</code>（语义 + 词法排序检索）、<code>memory_get</code>（含版本历史与审计轨迹）、<code>memory_create</code>（支持 <code>supersedes</code> 冲突消解）、<code>memory_update</code>、<code>memory_delete</code>（需显式确认）。鉴权走 OAuth（授权码 + PKCE、动态客户端注册、PAR、refresh token 轮换）或个人访问令牌。</p>
+            <p><strong>技术栈：</strong>Next.js 16 · React 19 · TypeScript · Tailwind CSS v4 · Supabase（Postgres + pgvector）· MCP SDK v2 · Zod 4 · Vitest。附 49 项单元测试（跑在内存仓储上，无需数据库）。数据归属功能是一等公民：导出为 <code>universal-memory.json</code>、导入、一键清空。</p>
+            <p>仓库：<a href="https://github.com/SayangChun/Universal-AI-Memory-Vault" target="_blank" rel="noopener noreferrer">github.com/SayangChun/Universal-AI-Memory-Vault</a></p>
+            <p class="ai-note">说明：项目说明根据仓库 README、<code>docs/provider-compatibility.md</code> 与 2026-08-08 提交记录由 AI 整理扩写；后续以仓库正文为准。</p>
+        </div>
+    </div>
+</body>
+</html>

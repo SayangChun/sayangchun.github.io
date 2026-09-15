@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标普500 场外额度监控 / SayangChun</title>
+    <link rel="icon" type="image/png" href="../../avatar.png">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <script src="../../assets/nav.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a class="back-link" href="../../achievements.html">&larr; 返回成果</a>
+
+        <h1>标普500 场外额度监控</h1>
+        <p class="entry-date">2026年9月</p>
+
+        <div class="entry-content">
+            <p>一个<strong>标普500场外基金申购额度自动监控与推送工具</strong>。境内 QDII 基金的申购额度经常变动甚至随时暂停，手动盯着看很费神——这个脚本替你把 14 只基金盯住，额度一变就推送到手机。</p>
+            <p><strong>监控范围：</strong>覆盖摩根、博时、易方达、天弘、华夏、国泰等基金公司的标普500场外基金，同时记录<strong>申购状态</strong>与<strong>赎回状态</strong>。以仓库当前快照为例：14 只中可买 5 只，人民币份额合计约 <strong>220 元/日</strong>。</p>
+            <p><strong>运行机制：</strong>周一到周四 15:30（交易日前一天下午）提前查询，周一到周五交易时段 9:20–15:00 每 20 分钟密集检测，<strong>只有额度发生变动时</strong>才推送，避免打扰；抓取失败时沿用旧值以防误报。推送渠道支持 Server酱（微信）与 Bark（iOS），二选一或都配。</p>
+            <p><strong>工程特点：</strong>零第三方依赖，Python 3.7+ 直接运行，适合 GitHub Actions 免费托管；首次运行建立基线快照不推送，快照保存在 <code>data/state.json</code> 并自动提交；README 中的「实时额度」表格随每次检测自动刷新，打开仓库首页即可看最新额度。监控名单与备注在 <code>funds.json</code> 中可自行增删。</p>
+            <p><strong>本地用法：</strong><code>python3 sp500_quota_watch.py --print</code>（只看额度表）、<code>--init</code>（建立基线）、直接运行（检测变动并推送）。其他用户也可以 Fork 后配置自己的 Secrets 使用。</p>
+            <p>仓库：<a href="https://github.com/SayangChun/sp500-quota-watch" target="_blank" rel="noopener noreferrer">github.com/SayangChun/sp500-quota-watch</a></p>
+            <p class="ai-note">说明：项目说明根据仓库 README、<code>funds.json</code> 与 2026-09-04～14 提交记录由 AI 整理扩写；后续以仓库正文为准。额度数据来自公开接口，仅供参考。</p>
+        </div>
+    </div>
+</body>
+</html>

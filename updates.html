@@ -14,6 +14,114 @@
 
         <div class="entry">
             <div class="entry-header">
+                <span class="entry-title">本站重构：栏目收敛为简历 / 成果 / 动态 / 工作流</span>
+                <span class="entry-date">2026年9月15日</span>
+            </div>
+            <div class="entry-content">
+                <p>站点结构做了一次收敛：移除文章、摘录等栏目及其子页，只保留<strong>简历、成果、动态、工作流</strong>四栏，导航与详情页的返回链路同步整理；同期更新头像与首页自我介绍。</p>
+                <p>站点：<a href="https://sayangchun.github.io" target="_blank" rel="noopener noreferrer">sayangchun.github.io</a> · 代表提交：<a href="https://github.com/SayangChun/sayangchun.github.io/commit/c818297" target="_blank" rel="noopener noreferrer">c818297</a>（重构结构）、<a href="https://github.com/SayangChun/sayangchun.github.io/commit/a7f2eb6" target="_blank" rel="noopener noreferrer">a7f2eb6</a>（头像 / 首页）</p>
+                <p class="ai-note">说明：根据本站仓库 2026-09-13～15 提交记录由 AI 归纳撰写。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">开源标普500指数基金每日定投跟踪</span>
+                <span class="entry-date">2026年9月14日</span>
+            </div>
+            <div class="entry-content">
+                <p>发布 <a href="https://github.com/SayangChun/sp500-dca" target="_blank" rel="noopener noreferrer">sp500-dca</a>：自动跟踪标普500指数基金（QDII）的每日定投。数据取自天天基金披露的官方净值与申购状态，由 GitHub Actions 定时抓取、重算持仓并提交。计算按<strong>境内基金实际开放申购口径</strong>——仅交易日且开放申购才执行，QDII 按 T 日净值确认、T+2 到账，份额四舍五入保留 2 位小数；起投日 2026-08-17，无终止日期。</p>
+                <p>截至 2026-09-11 净值日：累计投入 <strong>¥379.81</strong>，当前市值 <strong>¥378.64</strong>，累计盈亏 <strong>¥-1.17（-0.31%）</strong>；实际定投 19 个交易日，因暂停申购跳过 1 天。仓库自动生成 SVG 定投曲线与最近记录表，并提供在线看板。在线看板：<a href="https://sayangchun.github.io/sp500-dca/" target="_blank" rel="noopener noreferrer">sayangchun.github.io/sp500-dca</a> · 代表提交：<a href="https://github.com/SayangChun/sp500-dca/commit/53f7c9a2" target="_blank" rel="noopener noreferrer">53f7c9a</a></p>
+                <p class="ai-note">说明：根据仓库 README 自动生成段与 2026-09-14 提交记录由 AI 归纳撰写；数字以 README 为准，不构成投资建议。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">0.1BTC：新增全部持仓均价，进度刷新至 22.26%</span>
+                <span class="entry-date">2026年9月13日</span>
+            </div>
+            <div class="entry-content">
+                <p>更新 <a href="https://github.com/SayangChun/0.1BTC" target="_blank" rel="noopener noreferrer">0.1BTC</a>：新增<strong>全部持仓均价</strong>的计算与展示（Binance / OKX 分账户均价 + 合计均价），并刷新 2026-09-13 持仓快照与累计曲线。</p>
+                <p>当前全部持仓 <strong>0.02225951 BTC（进度 22.26%）</strong>，约合 $1,719.17 / ¥11,571.49，距离目标还差 0.07774049 BTC；全部持仓均价 <strong>$68,070.3/BTC</strong>（Binance $67,795.4、OKX $68,196.5）；冷钱包累计 0.015231 BTC。代表提交：<a href="https://github.com/SayangChun/0.1BTC/commit/c4296805" target="_blank" rel="noopener noreferrer">c429680</a>（均价功能）、<a href="https://github.com/SayangChun/0.1BTC/commit/0997873e" target="_blank" rel="noopener noreferrer">0997873</a>（均价修正）</p>
+                <p class="ai-note">说明：根据仓库 README 自动生成段与 2026-09-06～13 提交记录由 AI 归纳撰写。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">BTC FIRE OS：WebDAV 云备份与 FIRE 进度修正</span>
+                <span class="entry-date">2026年9月12日</span>
+            </div>
+            <div class="entry-content">
+                <p>更新 <a href="https://github.com/SayangChun/BTC_FIRE_OS" target="_blank" rel="noopener noreferrer">BTC FIRE OS</a>：新增 <strong>WebDAV 云备份 / 恢复</strong>，可在设置里配置服务器并上传 / 下载备份。为绕开浏览器 CORS 限制新增 <code>/api/webdav</code> 服务端代理路由，并用原生 <code>fetch</code> 重写 PROPFIND 目录解析（兼容 <code>d:</code> / <code>D:</code> 命名空间前缀与 TeraCloud 的 Depth 头要求）。同时把 FIRE 进度改为按<strong>当前持仓</strong>计算并传入未来卡片，进度 ≥100% 时新增「已达成」状态。</p>
+                <p>在线体验：<a href="https://btcfire.vercel.app" target="_blank" rel="noopener noreferrer">btcfire.vercel.app</a> · 代表提交：<a href="https://github.com/SayangChun/BTC_FIRE_OS/commit/64911a37" target="_blank" rel="noopener noreferrer">64911a3</a>（WebDAV 备份）、<a href="https://github.com/SayangChun/BTC_FIRE_OS/commit/abf4204b" target="_blank" rel="noopener noreferrer">abf4204</a>（进度修正）</p>
+                <p class="ai-note">说明：根据仓库 README 与 2026-09-10～12 提交记录由 AI 归纳撰写。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">开源 FIRE-Agent：可移植的 AI FIRE 数字员工</span>
+                <span class="entry-date">2026年9月8日</span>
+            </div>
+            <div class="entry-content">
+                <p>发布 <a href="https://github.com/SayangChun/FIRE-Agent" target="_blank" rel="noopener noreferrer">FIRE-Agent</a>：把 FIRE 顾问能力打包成一套可移植知识包，直接运行在你自己已有的 ChatGPT / Gemini / Claude 上——<strong>无需 API Key、无需服务器、无需订阅</strong>。核心取向是「Agent Core ≠ AI Runtime」：指令、方法论、计算公式、风险框架与数据 Schema 与平台解耦，换平台只换一份 adapter。</p>
+                <p>能力覆盖 FIRE 数值与进度、储蓄率对时间线的影响、FIRE 年龄复利模拟、保守 / 基准 / 乐观情景、<strong>10,000 次蒙特卡洛</strong>成功率、Lean / Coast / Barista / Fat 等 FIRE 类型、序列 / 通胀 / 长寿 / 集中度风险，以及「45 岁退休需要什么」的逆向规划。强调确定性数学用代码算而不是让 LLM 估，并附 86 项单元测试。仓库：<a href="https://github.com/SayangChun/FIRE-Agent" target="_blank" rel="noopener noreferrer">github.com/SayangChun/FIRE-Agent</a> · 代表提交：<a href="https://github.com/SayangChun/FIRE-Agent/commit/a32a0271" target="_blank" rel="noopener noreferrer">a32a027</a></p>
+                <p class="ai-note">说明：根据仓库 README、目录结构与 2026-09-08 提交记录由 AI 归纳撰写。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">开源标普500场外额度监控与推送</span>
+                <span class="entry-date">2026年9月4日</span>
+            </div>
+            <div class="entry-content">
+                <p>发布 <a href="https://github.com/SayangChun/sp500-quota-watch" target="_blank" rel="noopener noreferrer">sp500-quota-watch</a>：监控 14 只标普500场外基金（摩根 / 博时 / 易方达 / 天弘 / 华夏 / 国泰）的申购额度与赎回状态。工作日交易时段 9:20–15:00 每 20 分钟密集检测，额度<strong>发生变动时</strong>才经 Server酱 / Bark 推送；抓取失败时沿用旧值避免误报。</p>
+                <p>零第三方依赖、Python 3.7+ 直接运行，适合 GitHub Actions 免费托管；README 的「实时额度」表随检测自动刷新，打开仓库首页即可看最新额度。当前快照：可买 5 只 / 共 14 只，人民币份额合计约 220 元/日。仓库：<a href="https://github.com/SayangChun/sp500-quota-watch" target="_blank" rel="noopener noreferrer">github.com/SayangChun/sp500-quota-watch</a> · 代表提交：<a href="https://github.com/SayangChun/sp500-quota-watch/commit/025eec18" target="_blank" rel="noopener noreferrer">025eec1</a></p>
+                <p class="ai-note">说明：根据仓库 README、<code>funds.json</code> 与 2026-09-04～14 提交记录由 AI 归纳撰写。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">开源 Universal AI Memory Vault：跨平台 AI 长期记忆层</span>
+                <span class="entry-date">2026年8月8日</span>
+            </div>
+            <div class="entry-content">
+                <p>发布 <a href="https://github.com/SayangChun/Universal-AI-Memory-Vault" target="_blank" rel="noopener noreferrer">Universal AI Memory Vault</a>：一个厂商中立的个人长期记忆层——Claude、ChatGPT 等通过 <strong>MCP</strong>（Streamable HTTP + OAuth）读写<strong>同一份</strong>记忆库，而数据归属、访问控制与变更审计都在自己手里。项目刻意只做「存储 + 检索」，不含 AI 对话、不替 AI 决定记什么、不抓浏览器会话，记忆智能留给调用方。</p>
+                <p>设计要点：单用户私有保险库（无注册登录）；记忆类型厂商中立（<code>fact</code> / <code>preference</code> / <code>goal</code> / <code>worldview</code> 等）；每次变更版本化并写入 <code>audit_logs</code>；全部数据访问走 Postgres <code>SECURITY DEFINER</code> RPC 并带显式 <code>user_id</code> 过滤；记忆返回给 AI 时标记为「不可信数据」。技术栈 Next.js 16 / React 19 / TypeScript / Supabase（Postgres + pgvector），MCP 暴露 <code>memory_search / get / create / update / delete</code> 五个工具。仓库：<a href="https://github.com/SayangChun/Universal-AI-Memory-Vault" target="_blank" rel="noopener noreferrer">github.com/SayangChun/Universal-AI-Memory-Vault</a></p>
+                <p class="ai-note">说明：根据仓库 README、兼容性矩阵文档与 2026-08-08 提交记录由 AI 归纳撰写。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">沙夜桌宠：记住你的称呼，漫游可攀爬</span>
+                <span class="entry-date">2026年8月1日</span>
+            </div>
+            <div class="entry-content">
+                <p>更新 <a href="https://github.com/SayangChun/AmanogawaSaya" target="_blank" rel="noopener noreferrer">AmanogawaSaya</a>：沙夜现在能<strong>记住你的称呼</strong>并在对话中叫出来；漫游规划支持<strong>垂直爬升 / 下降</strong>路径，配合统一各姿势高度、降低漫游频率、拉长休息停留，整体节奏更自然。</p>
+                <p>本地运行：<code>npm install</code> → <code>npm start</code>。仓库：<a href="https://github.com/SayangChun/AmanogawaSaya" target="_blank" rel="noopener noreferrer">github.com/SayangChun/AmanogawaSaya</a> · 代表提交：<a href="https://github.com/SayangChun/AmanogawaSaya/commit/7778c84e" target="_blank" rel="noopener noreferrer">7778c84</a>（记住称呼）、<a href="https://github.com/SayangChun/AmanogawaSaya/commit/7ee946a2" target="_blank" rel="noopener noreferrer">7ee946a</a>（攀爬漫游）</p>
+                <p class="ai-note">说明：根据 2026-08-01 提交记录与仓库 README 由 AI 归纳撰写。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">Health：调整蛋白质来源与放松选项</span>
+                <span class="entry-date">2026年8月1日</span>
+            </div>
+            <div class="entry-content">
+                <p>微调 <a href="https://github.com/SayangChun/Health" target="_blank" rel="noopener noreferrer">Health</a> 清单：细化饮食部分的蛋白质来源建议，并调整心理放松的可选项。</p>
+                <p>仍仅 README 阅读，非医疗建议。仓库：<a href="https://github.com/SayangChun/Health" target="_blank" rel="noopener noreferrer">github.com/SayangChun/Health</a> · 提交：<a href="https://github.com/SayangChun/Health/commit/552eb09e" target="_blank" rel="noopener noreferrer">552eb09</a></p>
+                <p class="ai-note">说明：根据 2026-08-01 提交记录由 AI 归纳撰写。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
                 <span class="entry-title">天之川沙夜桌宠：侧栏 Dock、行为链与低位姿势</span>
                 <span class="entry-date">2026年7月30日</span>
             </div>

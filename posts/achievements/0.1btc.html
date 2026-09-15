@@ -16,12 +16,12 @@
         <p class="entry-date">2026年7月</p>
 
         <div class="entry-content">
-            <p>在 GitHub 上公开记录囤积 <strong>0.1 BTC</strong> 的过程：不设独立网站，打开仓库 README 即可看进度条、累计曲线、提现明细与全部持仓。数据驱动、可复现，和「只认真对待能长期自托管的部分」一致。</p>
-            <p><strong>记录范围：</strong><strong>进度目标（0.1 BTC）</strong>只统计<strong>提现到冷钱包</strong>的累计；另用 <code>data/holdings.csv</code> 记录交易所、冷钱包等<strong>全部持仓快照</strong>，与冷钱包一并展示。流程是编辑 <code>transactions.csv</code> / <code>holdings.csv</code> → 运行 <code>python scripts/update_readme.py</code> → 提交推送；脚本自动刷新 README 进度总览、持仓表、SVG 累计图与提现明细。</p>
-            <p><strong>图表说明：</strong>以首次购买日 2026-03-27 为作图 0 起点；蓝线为冷钱包提现累计，橙线为全部持仓快照时序，灰虚线为定投参考；横轴按真实时间比例，最右端为目标日 2029-06-01（仅作轴端）；纵轴默认 0 → 0.1 BTC。GitHub 直接显示 SVG，无需部署网页。</p>
-            <p>截至仓库当前数据：冷钱包累计 <strong>0.005231 / 0.1 BTC</strong>（约 5.23%），1 笔提现，累计投入约 376.84 USD，平均成本约 $72,040 / BTC；全部持仓快照约 <strong>0.01658 BTC</strong>（2026-07-24）。</p>
+            <p>在 GitHub 上公开记录囤积 <strong>0.1 BTC</strong> 的过程：不设独立网站，打开仓库 README 即可看进度条、累计曲线、全部持仓与分账户均价。数据驱动、可复现，和「只认真对待能长期自托管的部分」一致。</p>
+            <p><strong>记录范围：</strong>用 <code>data/holdings.csv</code> 记录各交易所与冷钱包的<strong>全部持仓快照</strong>，并计算 Binance / OKX 分账户均价与合计均价；另有 <code>transactions.csv</code> 记录提现明细，冷钱包累计与提现明细保持一致。流程是编辑 CSV → 运行 <code>python scripts/update_readme.py</code> → 提交推送；脚本自动刷新 README 进度总览、持仓表、SVG 累计图与明细。</p>
+            <p><strong>图表说明：</strong>以首次购买日 2026-03-27 为作图 0 起点；橙线为全部持仓快照时序，灰虚线为定投参考（连接图中左下角与右上角，线性进度）；横轴按真实时间比例，最右端为目标日 2029-06-01（仅作轴端，不绘制该日数据点）；纵轴默认 0 → 0.1 BTC。GitHub 直接显示 SVG，无需部署网页。</p>
+            <p>截至 2026-09-13 快照：全部持仓 <strong>0.02225951 / 0.1 BTC（22.26%）</strong>，约合 $1,719.17 / ¥11,571.49，距离目标还差 0.07774049 BTC；全部持仓均价 <strong>$68,070.3/BTC</strong>（Binance $67,795.4、OKX $68,196.5）；冷钱包累计 0.015231 BTC。</p>
             <p>仓库：<a href="https://github.com/SayangChun/0.1BTC" target="_blank" rel="noopener noreferrer">github.com/SayangChun/0.1BTC</a></p>
-            <p class="ai-note">说明：项目说明与进度数字根据仓库 README、数据文件与 2026-07-21～24 提交由 AI 整理扩写；后续以 README 自动生成段为准。</p>
+            <p class="ai-note">说明：项目说明与进度数字根据仓库 README、数据文件与 2026-09-06～13 提交由 AI 整理扩写；后续以 README 自动生成段为准。</p>
         </div>
     </div>
 </body>
