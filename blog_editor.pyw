@@ -16,9 +16,6 @@ BLOG_ROOT = Path(__file__).parent
 
 # 分类配置（文章详情页）
 CATEGORIES = {
-    "articles": {"name": "文章", "file": "articles.html"},
-    "thinking": {"name": "思考", "file": "thinking.html"},
-    "excerpts": {"name": "摘录", "file": "excerpts.html"},
     "achievements": {"name": "成果", "file": "achievements.html"},
     "updates": {"name": "动态", "file": "updates.html"},
 }
@@ -96,14 +93,14 @@ class BlogEditor:
         row0.pack(fill=tk.X, pady=(0, 8))
         
         ttk.Label(row0, text="类型:").pack(side=tk.LEFT, padx=(0, 5))
-        self.new_type = tk.StringVar(value="文章")
+        self.new_type = tk.StringVar(value="成果")
         type_combo = ttk.Combobox(row0, textvariable=self.new_type, 
-                                  values=["文章", "动态"], state="readonly", width=12)
+                                  values=["成果", "动态"], state="readonly", width=12)
         type_combo.pack(side=tk.LEFT)
         type_combo.bind("<<ComboboxSelected>>", self.new_type_change)
         
         ttk.Label(row0, text="分类:").pack(side=tk.LEFT, padx=(20, 5))
-        self.new_category = tk.StringVar(value="articles")
+        self.new_category = tk.StringVar(value="achievements")
         self.new_cat_combo = ttk.Combobox(row0, textvariable=self.new_category, 
                                           values=list(CATEGORIES.keys()), state="readonly", width=12)
         self.new_cat_combo.pack(side=tk.LEFT)
@@ -157,7 +154,7 @@ class BlogEditor:
             self.new_category.set("updates")
         else:
             self.new_cat_combo.config(values=list(CATEGORIES.keys()))
-            self.new_category.set("articles")
+            self.new_category.set("achievements")
     
     def new_preview(self):
         html = self._generate_html(self.new_category.get(), self.new_title.get(), 
@@ -221,7 +218,7 @@ class BlogEditor:
         row1.pack(fill=tk.X, pady=(0, 5))
         
         ttk.Label(row1, text="分类:").pack(side=tk.LEFT, padx=(0, 5))
-        self.edit_category = tk.StringVar(value="articles")
+        self.edit_category = tk.StringVar(value="achievements")
         self.edit_cat_combo = ttk.Combobox(row1, textvariable=self.edit_category, 
                                            values=list(CATEGORIES.keys()), state="readonly", width=12)
         self.edit_cat_combo.pack(side=tk.LEFT, padx=(0, 20))
@@ -452,14 +449,14 @@ class BlogEditor:
         row0.pack(fill=tk.X, pady=(0, 8))
         
         ttk.Label(row0, text="类型:").pack(side=tk.LEFT, padx=(0, 5))
-        self.del_type = tk.StringVar(value="文章")
+        self.del_type = tk.StringVar(value="成果")
         type_combo = ttk.Combobox(row0, textvariable=self.del_type, 
-                                  values=["文章", "动态"], state="readonly", width=12)
+                                  values=["成果", "动态"], state="readonly", width=12)
         type_combo.pack(side=tk.LEFT)
         type_combo.bind("<<ComboboxSelected>>", self.del_type_change)
         
         ttk.Label(row0, text="分类:").pack(side=tk.LEFT, padx=(20, 5))
-        self.del_category = tk.StringVar(value="articles")
+        self.del_category = tk.StringVar(value="achievements")
         self.del_cat_combo = ttk.Combobox(row0, textvariable=self.del_category, 
                                           values=list(CATEGORIES.keys()), state="readonly", width=12)
         self.del_cat_combo.pack(side=tk.LEFT)
@@ -503,7 +500,7 @@ class BlogEditor:
             self.del_category.set("updates")
         else:
             self.del_cat_combo.config(values=list(CATEGORIES.keys()))
-            self.del_category.set("articles")
+            self.del_category.set("achievements")
         self.del_load_list()
     
     def del_load_list(self, event=None):

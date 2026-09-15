@@ -1,6 +1,6 @@
 # sayangchun.github.io
 
-个人静态展示站：简历、文章、思考、摘录、成果、动态与工作流。无构建工具，纯 HTML / CSS / JS，适合 GitHub Pages 直接托管。
+个人静态展示站：简历、成果、动态与工作流。无构建工具，纯 HTML / CSS / JS，适合 GitHub Pages 直接托管。
 
 ## 怎么更新
 
@@ -14,7 +14,7 @@
 
 | 信息 | 示例 |
 |------|------|
-| 栏目 | 文章 / 思考 / 摘录 / 成果 / 动态 / 工作流 / 简历 |
+| 栏目 | 成果 / 动态 / 工作流 / 简历 |
 | 标题 | 《某某》 |
 | 日期 | 2026年7月13日 |
 | 摘要 | 列表页一句话 |
@@ -29,9 +29,6 @@
 .
 ├── index.html              # 简历（中文）
 ├── en.html                 # 简历（英文）
-├── articles.html           # 文章列表
-├── thinking.html           # 思考列表
-├── excerpts.html           # 摘录列表
 ├── achievements.html       # 成果列表
 ├── updates.html            # 动态列表
 ├── workflow.html           # 工作流
@@ -40,9 +37,6 @@
 │   ├── style.css           # 全站样式（含暗色模式）
 │   └── nav.js              # 侧栏导航注入与当前页高亮
 └── posts/
-    ├── articles/           # 文章详情
-    ├── thinking/           # 思考详情
-    ├── excerpts/           # 摘录详情
     └── achievements/       # 成果详情
 ```
 
