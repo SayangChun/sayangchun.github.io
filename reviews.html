@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>评测 / SayangChun</title>
+    <link rel="icon" type="image/png" href="avatar.png">
+    <link rel="stylesheet" href="assets/style.css">
+    <script src="assets/nav.js"></script>
+    <script src="assets/reviews.js"></script>
+</head>
+<body>
+    <div class="container">
+
+        <h1>评测</h1>
+
+        <p class="review-stats">共 0 篇评测</p>
+
+        <div class="review-filters">
+            <div class="filter-group" data-filter-group="type">
+                <span class="filter-label">类型:</span>
+            </div>
+            <div class="filter-group" data-filter-group="verdict">
+                <span class="filter-label">结论:</span>
+            </div>
+        </div>
+
+        <div class="review-list">
+
+            <div class="entry review-card" data-type="game" data-verdict="recommended">
+                <a class="review-cover" href="posts/reviews/demo-game.html"><span>🎮</span></a>
+                <div class="review-body">
+                    <div class="review-head">
+                        <a class="entry-title" href="posts/reviews/demo-game.html">示例条目 · 一款值得推荐的游戏</a>
+                        <span class="review-verdict up">👍 推荐</span>
+                    </div>
+                    <p class="review-meta"><span class="badge">游戏</span>某开发组 · 2024 · Steam · 通关（约 40 小时）</p>
+                    <p class="review-one">这里是一句话短评的位置：用一句话说清你为什么推荐或不推荐它。</p>
+                </div>
+            </div>
+
+            <div class="entry review-card" data-type="book" data-verdict="not-recommended">
+                <a class="review-cover" href="posts/reviews/demo-book.html"><span>📖</span></a>
+                <div class="review-body">
+                    <div class="review-head">
+                        <a class="entry-title" href="posts/reviews/demo-book.html">示例条目 · 一本不推荐的书</a>
+                        <span class="review-verdict down">👎 不推荐</span>
+                    </div>
+                    <p class="review-meta"><span class="badge">书</span>某作者 · 2019 · 纸质 · 读了 60%（弃）</p>
+                    <p class="review-one">不推荐的条目用红色拇指标注，正文里写清楚扣分的理由。</p>
+                </div>
+            </div>
+
+        </div>
+
+        <p class="review-empty">没有符合条件的评测。</p>
+
+    </div>
+</body>
+</html>

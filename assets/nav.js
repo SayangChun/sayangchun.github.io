@@ -28,6 +28,7 @@
             { file: 'index.html', label: '简历' },
             { file: 'achievements.html', label: '成果' },
             { file: 'updates.html', label: '动态' },
+            { file: 'reviews.html', label: '评测' },
             { file: 'workflow.html', label: '工作流' }
         ];
 

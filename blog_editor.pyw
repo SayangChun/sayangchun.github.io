@@ -5,9 +5,10 @@
 """
 
 import tkinter as tk
-from tkinter import ttk, messagebox, scrolledtext
+from tkinter import ttk, messagebox, scrolledtext, filedialog
 import os
 import re
+import shutil
 from pathlib import Path
 from datetime import datetime
 
@@ -18,6 +19,30 @@ BLOG_ROOT = Path(__file__).parent
 CATEGORIES = {
     "achievements": {"name": "成果", "file": "achievements.html"},
     "updates": {"name": "动态", "file": "updates.html"},
+    "reviews": {"name": "评测", "file": "reviews.html"},
+}
+
+# 评测：作品类型（Steam 式二元结论，不打分）
+REVIEW_TYPE_LABELS = {
+    "game": "游戏",
+    "book": "书",
+    "movie": "电影",
+    "anime": "动画",
+    "series": "剧集",
+    "music": "音乐",
+}
+REVIEW_TYPE_KEYS = {v: k for k, v in REVIEW_TYPE_LABELS.items()}
+REVIEW_TYPE_ICONS = {
+    "game": "🎮",
+    "book": "📖",
+    "movie": "🎬",
+    "anime": "🌸",
+    "series": "📺",
+    "music": "🎧",
+}
+VERDICT_LABELS = {
+    "recommended": "👍 推荐",
+    "not-recommended": "👎 不推荐",
 }
 
 # 单页面（无详情页，直接编辑）
@@ -44,6 +69,42 @@ DETAIL_TEMPLATE = '''<!DOCTYPE html>
 
         <h1>{title}</h1>
         <p class="entry-date">{date}</p>
+
+        <div class="entry-content">
+            {content}
+        </div>
+    </div>
+</body>
+</html>
+'''
+
+# 评测详情页模板（封面 + 元信息 + Steam 式结论徽章 + 评论正文）
+REVIEW_DETAIL_TEMPLATE = '''<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title} / SayangChun</title>
+    <link rel="icon" type="image/png" href="../../avatar.png">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <script src="../../assets/nav.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a class="back-link" href="../../reviews.html">&larr; 返回评测</a>
+
+        <h1>{title}</h1>
+        <p class="entry-date">评测于 {date}</p>
+
+        <div class="review-hero">
+            {cover_html}
+            <div class="review-hero-meta">
+                {verdict_html}
+                <table class="review-meta-table">
+{meta_rows}
+                </table>
+            </div>
+        </div>
 
         <div class="entry-content">
             {content}
@@ -91,53 +152,58 @@ class BlogEditor:
         # 类型选择
         row0 = ttk.Frame(tab)
         row0.pack(fill=tk.X, pady=(0, 8))
-        
+
         ttk.Label(row0, text="类型:").pack(side=tk.LEFT, padx=(0, 5))
         self.new_type = tk.StringVar(value="成果")
-        type_combo = ttk.Combobox(row0, textvariable=self.new_type, 
-                                  values=["成果", "动态"], state="readonly", width=12)
+        type_combo = ttk.Combobox(row0, textvariable=self.new_type,
+                                  values=["成果", "动态", "评测"], state="readonly", width=12)
         type_combo.pack(side=tk.LEFT)
         type_combo.bind("<<ComboboxSelected>>", self.new_type_change)
-        
+
         ttk.Label(row0, text="分类:").pack(side=tk.LEFT, padx=(20, 5))
         self.new_category = tk.StringVar(value="achievements")
-        self.new_cat_combo = ttk.Combobox(row0, textvariable=self.new_category, 
+        self.new_cat_combo = ttk.Combobox(row0, textvariable=self.new_category,
                                           values=list(CATEGORIES.keys()), state="readonly", width=12)
         self.new_cat_combo.pack(side=tk.LEFT)
-        
+        self.new_cat_combo.bind("<<ComboboxSelected>>", self.new_cat_change)
+
         # 标题
         row1 = ttk.Frame(tab)
         row1.pack(fill=tk.X, pady=(0, 8))
-        
+
         ttk.Label(row1, text="标题:").pack(side=tk.LEFT, padx=(0, 5))
         self.new_title = tk.StringVar()
         ttk.Entry(row1, textvariable=self.new_title, width=50).pack(side=tk.LEFT, fill=tk.X, expand=True)
-        
+
         # 日期和文件名
         row2 = ttk.Frame(tab)
         row2.pack(fill=tk.X, pady=(0, 8))
-        
+
         ttk.Label(row2, text="日期:").pack(side=tk.LEFT, padx=(0, 5))
         self.new_date = tk.StringVar(value=datetime.now().strftime("%Y年%m月%d日"))
         ttk.Entry(row2, textvariable=self.new_date, width=20).pack(side=tk.LEFT, padx=(0, 20))
-        
+
         ttk.Label(row2, text="文件名:").pack(side=tk.LEFT, padx=(0, 5))
         self.new_slug = tk.StringVar()
         ttk.Entry(row2, textvariable=self.new_slug, width=35).pack(side=tk.LEFT, fill=tk.X, expand=True)
-        
-        # 摘要
-        row3 = ttk.Frame(tab)
-        row3.pack(fill=tk.X, pady=(0, 8))
-        
-        ttk.Label(row3, text="摘要:").pack(side=tk.LEFT, padx=(0, 5))
+
+        # 摘要（评测类型时隐藏，由"一句话短评"代替）
+        self.new_summary_row = ttk.Frame(tab)
+        self.new_summary_row.pack(fill=tk.X, pady=(0, 8))
+
+        ttk.Label(self.new_summary_row, text="摘要:").pack(side=tk.LEFT, padx=(0, 5))
         self.new_summary = tk.StringVar()
-        ttk.Entry(row3, textvariable=self.new_summary, width=65).pack(side=tk.LEFT, fill=tk.X, expand=True)
-        
+        ttk.Entry(self.new_summary_row, textvariable=self.new_summary, width=65).pack(side=tk.LEFT, fill=tk.X, expand=True)
+
+        # 评测属性区（仅"评测"类型显示；创建后不 pack，等待切换）
+        self.new_review_frame, self.new_review_fields = self._build_review_fields(
+            tab, slug_getter=lambda: self.new_slug.get())
+
         # 正文
-        content_frame = ttk.LabelFrame(tab, text="正文内容 (支持HTML)", padding="5")
-        content_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 8))
-        
-        self.new_content = scrolledtext.ScrolledText(content_frame, height=15, wrap=tk.WORD, font=("Consolas", 11))
+        self.new_content_frame = ttk.LabelFrame(tab, text="正文内容 (支持HTML)", padding="5")
+        self.new_content_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 8))
+
+        self.new_content = scrolledtext.ScrolledText(self.new_content_frame, height=15, wrap=tk.WORD, font=("Consolas", 11))
         self.new_content.pack(fill=tk.BOTH, expand=True)
         
         # 按钮
@@ -148,13 +214,26 @@ class BlogEditor:
         ttk.Button(btn_frame, text="保存并更新列表", command=self.new_save).pack(side=tk.LEFT, padx=(0, 5))
         ttk.Button(btn_frame, text="清空", command=self.new_clear).pack(side=tk.LEFT)
     
+    # 类型 <-> 分类一一对应：成果/动态/评测
+    _TYPE_CATEGORY = {"成果": "achievements", "动态": "updates", "评测": "reviews"}
+
     def new_type_change(self, event=None):
-        if self.new_type.get() == "动态":
-            self.new_cat_combo.config(values=["updates"])
-            self.new_category.set("updates")
+        cat = self._TYPE_CATEGORY.get(self.new_type.get(), "achievements")
+        self.new_cat_combo.config(values=[cat])
+        self.new_category.set(cat)
+        self._show_new_review_fields(cat == "reviews")
+
+    def new_cat_change(self, event=None):
+        self._show_new_review_fields(self.new_category.get() == "reviews")
+
+    def _show_new_review_fields(self, show):
+        """评测类型：隐藏摘要行，显示评测属性区"""
+        if show:
+            self.new_summary_row.pack_forget()
+            self.new_review_frame.pack(fill=tk.X, pady=(0, 8), before=self.new_content_frame)
         else:
-            self.new_cat_combo.config(values=list(CATEGORIES.keys()))
-            self.new_category.set("achievements")
+            self.new_review_frame.pack_forget()
+            self.new_summary_row.pack(fill=tk.X, pady=(0, 8), before=self.new_content_frame)
     
     def new_preview(self):
         html = self._generate_html(self.new_category.get(), self.new_title.get(), 
@@ -171,19 +250,27 @@ class BlogEditor:
         date = self.new_date.get().strip()
         summary = self.new_summary.get().strip()
         content = self.new_content.get("1.0", tk.END).strip()
-        
+
         if not all([title, slug, content]):
             messagebox.showwarning("警告", "请填写标题、文件名和正文")
             return
-        
-        html = self._generate_html(category, title, date, content)
+
         posts_dir = BLOG_ROOT / "posts" / category
         posts_dir.mkdir(parents=True, exist_ok=True)
-        (posts_dir / f"{slug}.html").write_text(html, encoding="utf-8")
-        
-        self._update_listing(category, slug, title, date, summary or title)
+
+        if category == "reviews":
+            rv = self._collect_review_fields(self.new_review_fields)
+            rv.update({"title": title, "slug": slug, "date": date})
+            html = self._generate_review_html(rv, content)
+            (posts_dir / f"{slug}.html").write_text(html, encoding="utf-8")
+            self._update_review_listing(rv)
+        else:
+            html = self._generate_html(category, title, date, content)
+            (posts_dir / f"{slug}.html").write_text(html, encoding="utf-8")
+            self._update_listing(category, slug, title, date, summary or title)
+
         self._update_homepage_date()
-        
+
         self.status_var.set(f"已保存: posts/{category}/{slug}.html")
         messagebox.showinfo("成功", "文章已保存并更新列表")
     
@@ -193,6 +280,10 @@ class BlogEditor:
         self.new_summary.set("")
         self.new_date.set(datetime.now().strftime("%Y年%m月%d日"))
         self.new_content.delete("1.0", tk.END)
+        for var in self.new_review_fields.values():
+            var.set("")
+        self.new_review_fields["type"].set("游戏")
+        self.new_review_fields["verdict"].set("recommended")
     
     # ==================== 修改文章选项卡 ====================
     
@@ -219,10 +310,10 @@ class BlogEditor:
         
         ttk.Label(row1, text="分类:").pack(side=tk.LEFT, padx=(0, 5))
         self.edit_category = tk.StringVar(value="achievements")
-        self.edit_cat_combo = ttk.Combobox(row1, textvariable=self.edit_category, 
+        self.edit_cat_combo = ttk.Combobox(row1, textvariable=self.edit_category,
                                            values=list(CATEGORIES.keys()), state="readonly", width=12)
         self.edit_cat_combo.pack(side=tk.LEFT, padx=(0, 20))
-        self.edit_cat_combo.bind("<<ComboboxSelected>>", self.edit_load_list)
+        self.edit_cat_combo.bind("<<ComboboxSelected>>", self.edit_cat_changed)
         
         ttk.Label(row1, text="文章:").pack(side=tk.LEFT, padx=(0, 5))
         self.edit_post = tk.StringVar()
@@ -249,29 +340,37 @@ class BlogEditor:
         # 编辑区域
         edit_frame = ttk.LabelFrame(tab, text="编辑内容", padding="10")
         edit_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 10))
-        
+
         row2 = ttk.Frame(edit_frame)
         row2.pack(fill=tk.X, pady=(0, 5))
-        
+
         ttk.Label(row2, text="标题:").pack(side=tk.LEFT, padx=(0, 5))
         self.edit_title = tk.StringVar()
         ttk.Entry(row2, textvariable=self.edit_title, width=45).pack(side=tk.LEFT, fill=tk.X, expand=True)
-        
+
         row3 = ttk.Frame(edit_frame)
         row3.pack(fill=tk.X, pady=(0, 5))
-        
+
         ttk.Label(row3, text="日期:").pack(side=tk.LEFT, padx=(0, 5))
         self.edit_date = tk.StringVar()
-        ttk.Entry(row3, textvariable=self.edit_date, width=20).pack(side=tk.LEFT, padx=(0, 20))
-        
-        ttk.Label(row3, text="摘要:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Entry(row3, textvariable=self.edit_date, width=20).pack(side=tk.LEFT)
+
+        # 摘要行（评测分类时隐藏，由"一句话短评"代替）
+        self.edit_summary_row = ttk.Frame(edit_frame)
+        self.edit_summary_row.pack(fill=tk.X, pady=(0, 5))
+
+        ttk.Label(self.edit_summary_row, text="摘要:").pack(side=tk.LEFT, padx=(0, 5))
         self.edit_summary = tk.StringVar()
-        ttk.Entry(row3, textvariable=self.edit_summary, width=50).pack(side=tk.LEFT, fill=tk.X, expand=True)
-        
-        content_frame = ttk.LabelFrame(edit_frame, text="正文内容", padding="5")
-        content_frame.pack(fill=tk.BOTH, expand=True)
-        
-        self.edit_content = scrolledtext.ScrolledText(content_frame, height=12, wrap=tk.WORD, font=("Consolas", 11))
+        ttk.Entry(self.edit_summary_row, textvariable=self.edit_summary, width=50).pack(side=tk.LEFT, fill=tk.X, expand=True)
+
+        # 评测属性区（仅 reviews 分类显示）
+        self.edit_review_frame, self.edit_review_fields = self._build_review_fields(
+            edit_frame, slug_getter=lambda: self.edit_post.get())
+
+        self.edit_content_frame = ttk.LabelFrame(edit_frame, text="正文内容", padding="5")
+        self.edit_content_frame.pack(fill=tk.BOTH, expand=True)
+
+        self.edit_content = scrolledtext.ScrolledText(self.edit_content_frame, height=12, wrap=tk.WORD, font=("Consolas", 11))
         self.edit_content.pack(fill=tk.BOTH, expand=True)
         
         # 按钮
@@ -291,6 +390,17 @@ class BlogEditor:
         else:
             self.edit_single_frame.pack(fill=tk.X, pady=(0, 10))
             self.edit_detail_frame.pack_forget()
+
+    def edit_cat_changed(self, event=None):
+        """切换分类：刷新文章列表 + 评测/普通字段区切换"""
+        is_review = self.edit_category.get() == "reviews"
+        if is_review:
+            self.edit_summary_row.pack_forget()
+            self.edit_review_frame.pack(fill=tk.X, pady=(0, 5), before=self.edit_content_frame)
+        else:
+            self.edit_review_frame.pack_forget()
+            self.edit_summary_row.pack(fill=tk.X, pady=(0, 5), before=self.edit_content_frame)
+        self.edit_load_list()
     
     def edit_load_list(self, event=None):
         category = self.edit_category.get()
@@ -315,25 +425,32 @@ class BlogEditor:
         title_match = re.search(r'<h1>(.*?)</h1>', content)
         date_match = re.search(r'<p class="entry-date">(.*?)</p>', content)
         content_match = re.search(r'<div class="entry-content">\s*(.*?)\s*</div>', content, re.DOTALL)
-        
+
         if title_match:
             self.edit_title.set(title_match.group(1))
         if date_match:
-            self.edit_date.set(date_match.group(1))
+            d = date_match.group(1)
+            if category == "reviews":
+                d = re.sub(r'^评测于\s*', '', d)
+            self.edit_date.set(d)
         if content_match:
             raw = content_match.group(1)
             raw = re.sub(r'<p[^>]*>', '', raw)
             raw = re.sub(r'</p>', '\n', raw)
             self.edit_content.delete("1.0", tk.END)
             self.edit_content.insert("1.0", raw.strip())
-        
-        listing_file = BLOG_ROOT / CATEGORIES[category]["file"]
-        if listing_file.exists():
-            listing_content = listing_file.read_text(encoding="utf-8")
-            summary_match = re.search(rf'href="posts/{category}/{post_name}\.html">.*?</a>.*?<p>(.*?)</p>', listing_content, re.DOTALL)
-            if summary_match:
-                self.edit_summary.set(summary_match.group(1).strip())
-        
+
+        if category == "reviews":
+            self._load_review_fields(self.edit_review_fields, content, post_name)
+            self.edit_summary.set("")
+        else:
+            listing_file = BLOG_ROOT / CATEGORIES[category]["file"]
+            if listing_file.exists():
+                listing_content = listing_file.read_text(encoding="utf-8")
+                summary_match = re.search(rf'href="posts/{category}/{post_name}\.html">.*?</a>.*?<p>(.*?)</p>', listing_content, re.DOTALL)
+                if summary_match:
+                    self.edit_summary.set(summary_match.group(1).strip())
+
         self.status_var.set(f"已加载: {post_name}.html")
     
     def edit_load_single(self):
@@ -386,13 +503,18 @@ class BlogEditor:
             post_name = self.edit_post.get()
             title = self.edit_title.get().strip()
             date = self.edit_date.get().strip()
-            
+
             if not all([post_name, title]):
                 messagebox.showwarning("警告", "请填写完整信息")
                 return
-            
-            html = self._generate_html(category, title, date, content)
+
             file_path = BLOG_ROOT / "posts" / category / f"{post_name}.html"
+            if category == "reviews":
+                rv = self._collect_review_fields(self.edit_review_fields)
+                rv.update({"title": title, "slug": post_name, "date": date})
+                html = self._generate_review_html(rv, content)
+            else:
+                html = self._generate_html(category, title, date, content)
             file_path.write_text(html, encoding="utf-8")
             self.status_var.set(f"已保存: {post_name}.html")
         else:
@@ -416,26 +538,29 @@ class BlogEditor:
         if self.edit_mode.get() == "单页面":
             messagebox.showinfo("提示", "单页面无需更新列表")
             return
-        
+
         category = self.edit_category.get()
         post_name = self.edit_post.get()
         title = self.edit_title.get().strip()
         date = self.edit_date.get().strip()
         summary = self.edit_summary.get().strip()
-        
+
         if not all([post_name, title, date]):
             messagebox.showwarning("警告", "请填写完整信息")
             return
-        
+
         listing_file = BLOG_ROOT / CATEGORIES[category]["file"]
         if listing_file.exists():
             content = listing_file.read_text(encoding="utf-8")
-            pattern = rf'<div class="entry">.*?href="posts/{category}/{post_name}\.html".*?</div>\s*</div>'
-            content = re.sub(pattern, '', content, flags=re.DOTALL)
-            content = re.sub(r'\n\s*\n\s*\n', '\n\n', content)
+            content = self._remove_listing_entry(content, category, post_name)
             listing_file.write_text(content, encoding="utf-8")
-        
-        self._update_listing(category, post_name, title, date, summary or title)
+
+        if category == "reviews":
+            rv = self._collect_review_fields(self.edit_review_fields)
+            rv.update({"title": title, "slug": post_name, "date": date})
+            self._update_review_listing(rv)
+        else:
+            self._update_listing(category, post_name, title, date, summary or title)
         messagebox.showinfo("成功", "列表已更新")
     
     # ==================== 删除文章选项卡 ====================
@@ -450,8 +575,8 @@ class BlogEditor:
         
         ttk.Label(row0, text="类型:").pack(side=tk.LEFT, padx=(0, 5))
         self.del_type = tk.StringVar(value="成果")
-        type_combo = ttk.Combobox(row0, textvariable=self.del_type, 
-                                  values=["成果", "动态"], state="readonly", width=12)
+        type_combo = ttk.Combobox(row0, textvariable=self.del_type,
+                                  values=["成果", "动态", "评测"], state="readonly", width=12)
         type_combo.pack(side=tk.LEFT)
         type_combo.bind("<<ComboboxSelected>>", self.del_type_change)
         
@@ -495,12 +620,9 @@ class BlogEditor:
         self.del_load_list()
     
     def del_type_change(self, event=None):
-        if self.del_type.get() == "动态":
-            self.del_cat_combo.config(values=["updates"])
-            self.del_category.set("updates")
-        else:
-            self.del_cat_combo.config(values=list(CATEGORIES.keys()))
-            self.del_category.set("achievements")
+        cat = self._TYPE_CATEGORY.get(self.del_type.get(), "achievements")
+        self.del_cat_combo.config(values=[cat])
+        self.del_category.set(cat)
         self.del_load_list()
     
     def del_load_list(self, event=None):
@@ -540,13 +662,11 @@ class BlogEditor:
         file_path = BLOG_ROOT / "posts" / category / f"{post_name}.html"
         if file_path.exists():
             file_path.unlink()
-        
+
         listing_file = BLOG_ROOT / CATEGORIES[category]["file"]
         if listing_file.exists():
             content = listing_file.read_text(encoding="utf-8")
-            pattern = rf'<div class="entry">.*?href="posts/{category}/{post_name}\.html".*?</div>\s*</div>'
-            content = re.sub(pattern, '', content, flags=re.DOTALL)
-            content = re.sub(r'\n\s*\n\s*\n', '\n\n', content)
+            content = self._remove_listing_entry(content, category, post_name)
             listing_file.write_text(content, encoding="utf-8")
         
         self._update_homepage_date()
@@ -715,7 +835,7 @@ class BlogEditor:
         existing_files = {f.stem for f in posts_dir.glob("*.html")} if posts_dir.exists() else set()
         
         content = listing_file.read_text(encoding="utf-8")
-        entries = re.findall(r'(<div class="entry">.*?</div>\s*</div>)', content, re.DOTALL)
+        entries = re.findall(r'(<div class="entry(?: review-card)?"[^>]*>.*?</div>\s*</div>)', content, re.DOTALL)
         
         new_content = content
         for entry in entries:
@@ -727,6 +847,214 @@ class BlogEditor:
         
         if new_content != content:
             listing_file.write_text(new_content, encoding="utf-8")
+
+    # ==================== 评测专属方法 ====================
+
+    def _build_review_fields(self, parent, slug_getter=None):
+        """构建评测属性表单区，返回 (frame, fields)。"""
+        frame = ttk.LabelFrame(parent, text="评测属性", padding="10")
+        fields = {
+            "type": tk.StringVar(value="游戏"),
+            "verdict": tk.StringVar(value="recommended"),
+            "original_title": tk.StringVar(),
+            "creator": tk.StringVar(),
+            "year": tk.StringVar(),
+            "platform": tk.StringVar(),
+            "progress": tk.StringVar(),
+            "tags": tk.StringVar(),
+            "one_liner": tk.StringVar(),
+            "cover": tk.StringVar(),
+        }
+
+        r1 = ttk.Frame(frame); r1.pack(fill=tk.X, pady=(0, 5))
+        ttk.Label(r1, text="作品类型:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Combobox(r1, textvariable=fields["type"],
+                     values=list(REVIEW_TYPE_LABELS.values()), state="readonly", width=10).pack(side=tk.LEFT, padx=(0, 25))
+        ttk.Label(r1, text="结论:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Radiobutton(r1, text="👍 推荐", variable=fields["verdict"], value="recommended").pack(side=tk.LEFT)
+        ttk.Radiobutton(r1, text="👎 不推荐", variable=fields["verdict"], value="not-recommended").pack(side=tk.LEFT, padx=(8, 0))
+
+        r2 = ttk.Frame(frame); r2.pack(fill=tk.X, pady=(0, 5))
+        ttk.Label(r2, text="原名:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Entry(r2, textvariable=fields["original_title"], width=24).pack(side=tk.LEFT, padx=(0, 18))
+        ttk.Label(r2, text="主创:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Entry(r2, textvariable=fields["creator"], width=24).pack(side=tk.LEFT, fill=tk.X, expand=True)
+
+        r3 = ttk.Frame(frame); r3.pack(fill=tk.X, pady=(0, 5))
+        ttk.Label(r3, text="年份:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Entry(r3, textvariable=fields["year"], width=8).pack(side=tk.LEFT, padx=(0, 25))
+        ttk.Label(r3, text="平台:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Entry(r3, textvariable=fields["platform"], width=18).pack(side=tk.LEFT, fill=tk.X, expand=True)
+
+        r4 = ttk.Frame(frame); r4.pack(fill=tk.X, pady=(0, 5))
+        ttk.Label(r4, text="进度:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Entry(r4, textvariable=fields["progress"], width=18).pack(side=tk.LEFT, padx=(0, 18))
+        ttk.Label(r4, text="标签:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Entry(r4, textvariable=fields["tags"], width=24).pack(side=tk.LEFT, fill=tk.X, expand=True)
+
+        r5 = ttk.Frame(frame); r5.pack(fill=tk.X, pady=(0, 5))
+        ttk.Label(r5, text="一句话短评:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Entry(r5, textvariable=fields["one_liner"], width=50).pack(side=tk.LEFT, fill=tk.X, expand=True)
+
+        r6 = ttk.Frame(frame); r6.pack(fill=tk.X)
+        ttk.Label(r6, text="封面:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Entry(r6, textvariable=fields["cover"], width=40).pack(side=tk.LEFT, fill=tk.X, expand=True)
+        if slug_getter:
+            ttk.Button(r6, text="浏览…", command=lambda: self._pick_cover(fields["cover"], slug_getter)).pack(side=tk.LEFT, padx=(8, 0))
+
+        return frame, fields
+
+    def _pick_cover(self, cover_var, slug_getter):
+        """选择图片并复制到 assets/covers/，自动填入路径。"""
+        path = filedialog.askopenfilename(
+            title="选择封面图片",
+            filetypes=[("图片文件", "*.jpg *.jpeg *.png *.webp *.gif")]
+        )
+        if not path:
+            return
+        src = Path(path)
+        covers_dir = BLOG_ROOT / "assets" / "covers"
+        covers_dir.mkdir(parents=True, exist_ok=True)
+        stem = (slug_getter().strip() if callable(slug_getter) else str(slug_getter).strip()) or src.stem
+        ext = src.suffix.lower() or ".jpg"
+        dst = covers_dir / f"{stem}{ext}"
+        if dst.exists():
+            dst = covers_dir / f"{stem}_{datetime.now().strftime('%H%M%S')}{ext}"
+        shutil.copy2(src, dst)
+        cover_var.set(f"assets/covers/{dst.name}")
+        self.status_var.set(f"封面已复制: {dst.name}")
+
+    def _collect_review_fields(self, fields):
+        """从表单 StringVar 收集为 dict。"""
+        label = fields["type"].get()
+        rv_type = REVIEW_TYPE_KEYS.get(label, "game")
+        return {
+            "type": rv_type,
+            "verdict": fields["verdict"].get() or "recommended",
+            "original_title": fields["original_title"].get().strip(),
+            "creator": fields["creator"].get().strip(),
+            "year": fields["year"].get().strip(),
+            "platform": fields["platform"].get().strip(),
+            "progress": fields["progress"].get().strip(),
+            "tags": fields["tags"].get().strip(),
+            "one_liner": fields["one_liner"].get().strip(),
+            "cover": fields["cover"].get().strip(),
+        }
+
+    def _load_review_fields(self, fields, content, post_name):
+        """从评测详情页 HTML 解析并回填表单。"""
+        m = re.search(r'class="review-verdict (up|down)"', content)
+        if m:
+            fields["verdict"].set("recommended" if m.group(1) == "up" else "not-recommended")
+        m = re.search(r'<tr><th>类型</th><td>(.*?)</td></tr>', content)
+        if m:
+            fields["type"].set(m.group(1).strip())
+        for label, key in [
+            ("原名", "original_title"), ("主创", "creator"), ("年份", "year"),
+            ("平台", "platform"), ("进度", "progress"), ("标签", "tags")
+        ]:
+            m = re.search(rf'<tr><th>{label}</th><td>(.*?)</td></tr>', content)
+            fields[key].set(m.group(1).strip() if m else "")
+        m = re.search(r'<img class="review-hero-cover" src="\.\./\.\./(assets/covers/[^"]+)"', content)
+        fields["cover"].set(m.group(1) if m else "")
+        # one-liner 从列表页卡片读取
+        listing_file = BLOG_ROOT / "reviews.html"
+        if listing_file.exists():
+            lc = listing_file.read_text(encoding="utf-8")
+            m = re.search(rf'href="posts/reviews/{re.escape(post_name)}\.html".*?<p class="review-one">(.*?)</p>', lc, re.DOTALL)
+            fields["one_liner"].set(m.group(1).strip() if m else "")
+
+    def _generate_review_html(self, rv, content):
+        """生成评测详情页 HTML。"""
+        if not rv.get("title"):
+            messagebox.showwarning("警告", "请输入标题")
+            return None
+        if not content:
+            messagebox.showwarning("警告", "请输入正文内容")
+            return None
+
+        if "<p>" not in content:
+            paragraphs = content.split("\n\n")
+            content = "\n".join(f"            <p>{p.strip()}</p>" for p in paragraphs if p.strip())
+
+        verdict = rv.get("verdict", "recommended")
+        cls = "up" if verdict == "recommended" else "down"
+        verdict_html = f'<span class="review-verdict {cls}">{VERDICT_LABELS[verdict]}</span>'
+
+        icon = REVIEW_TYPE_ICONS.get(rv["type"], "🎬")
+        if rv.get("cover"):
+            cover_html = f'<img class="review-hero-cover" src="../../{rv["cover"]}" alt="">'
+        else:
+            cover_html = f'<div class="review-hero-cover"><span>{icon}</span></div>'
+
+        rows = []
+        def add_row(label, value):
+            if value:
+                rows.append(f"                    <tr><th>{label}</th><td>{value}</td></tr>")
+        add_row("原名", rv.get("original_title"))
+        add_row("主创", rv.get("creator"))
+        add_row("年份", rv.get("year"))
+        add_row("类型", REVIEW_TYPE_LABELS.get(rv["type"], rv["type"]))
+        add_row("平台", rv.get("platform"))
+        add_row("进度", rv.get("progress"))
+        add_row("标签", rv.get("tags"))
+        meta_rows = "\n".join(rows)
+
+        return REVIEW_DETAIL_TEMPLATE.format(
+            title=rv["title"], date=rv.get("date", ""),
+            cover_html=cover_html, verdict_html=verdict_html,
+            meta_rows=meta_rows, content=content
+        )
+
+    def _review_card_html(self, rv):
+        """生成 reviews.html 列表页的单条卡片 HTML。"""
+        verdict = rv.get("verdict", "recommended")
+        cls = "up" if verdict == "recommended" else "down"
+        type_label = REVIEW_TYPE_LABELS.get(rv["type"], rv["type"])
+        icon = REVIEW_TYPE_ICONS.get(rv["type"], "🎬")
+        href = f'posts/reviews/{rv["slug"]}.html'
+        cover_inner = f'<img src="{rv["cover"]}" alt="">' if rv.get("cover") else f'<span>{icon}</span>'
+        meta_bits = " · ".join(x for x in [rv.get("creator"), rv.get("year"), rv.get("platform"), rv.get("progress")] if x)
+        one = rv.get("one_liner", "")
+        one_html = f'\n                <p class="review-one">{one}</p>' if one else ""
+        return f'''        <div class="entry review-card" data-type="{rv['type']}" data-verdict="{verdict}">
+            <a class="review-cover" href="{href}">{cover_inner}</a>
+            <div class="review-body">
+                <div class="review-head">
+                    <a class="entry-title" href="{href}">{rv['title']}</a>
+                    <span class="review-verdict {cls}">{VERDICT_LABELS[verdict]}</span>
+                </div>
+                <p class="review-meta"><span class="badge">{type_label}</span>{meta_bits}</p>{one_html}
+            </div>
+        </div>'''
+
+    def _update_review_listing(self, rv):
+        """更新 reviews.html：移除旧卡片（如有），插入新卡片到列表顶部。"""
+        listing_file = BLOG_ROOT / "reviews.html"
+        if not listing_file.exists():
+            return
+        content = listing_file.read_text(encoding="utf-8")
+        content = self._remove_listing_entry(content, "reviews", rv["slug"])
+        card = self._review_card_html(rv)
+        marker = '<div class="review-list">'
+        idx = content.find(marker)
+        if idx != -1:
+            insert_at = idx + len(marker)
+            content = content[:insert_at] + "\n" + card + content[insert_at:]
+        listing_file.write_text(content, encoding="utf-8")
+
+    def _remove_listing_entry(self, content, category, post_name):
+        """从列表页 HTML 中移除指定 slug 的 entry 或 review-card（通用）。"""
+        for pattern in (
+            rf'<div class="entry">.*?href="posts/{category}/{post_name}\.html".*?</div>\s*</div>',
+            rf'<div class="entry review-card"[^>]*>.*?href="posts/{category}/{post_name}\.html".*?</div>\s*</div>',
+        ):
+            new_content = re.sub(pattern, '', content, flags=re.DOTALL)
+            if new_content != content:
+                content = new_content
+                break
+        content = re.sub(r'\n\s*\n\s*\n', '\n\n', content)
+        return content
 
 
 def main():
