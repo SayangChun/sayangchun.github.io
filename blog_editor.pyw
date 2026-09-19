@@ -860,8 +860,6 @@ class BlogEditor:
             "creator": tk.StringVar(),
             "year": tk.StringVar(),
             "platform": tk.StringVar(),
-            "progress": tk.StringVar(),
-            "tags": tk.StringVar(),
             "one_liner": tk.StringVar(),
             "cover": tk.StringVar(),
         }
@@ -885,12 +883,6 @@ class BlogEditor:
         ttk.Entry(r3, textvariable=fields["year"], width=8).pack(side=tk.LEFT, padx=(0, 25))
         ttk.Label(r3, text="平台:").pack(side=tk.LEFT, padx=(0, 5))
         ttk.Entry(r3, textvariable=fields["platform"], width=18).pack(side=tk.LEFT, fill=tk.X, expand=True)
-
-        r4 = ttk.Frame(frame); r4.pack(fill=tk.X, pady=(0, 5))
-        ttk.Label(r4, text="进度:").pack(side=tk.LEFT, padx=(0, 5))
-        ttk.Entry(r4, textvariable=fields["progress"], width=18).pack(side=tk.LEFT, padx=(0, 18))
-        ttk.Label(r4, text="标签:").pack(side=tk.LEFT, padx=(0, 5))
-        ttk.Entry(r4, textvariable=fields["tags"], width=24).pack(side=tk.LEFT, fill=tk.X, expand=True)
 
         r5 = ttk.Frame(frame); r5.pack(fill=tk.X, pady=(0, 5))
         ttk.Label(r5, text="一句话短评:").pack(side=tk.LEFT, padx=(0, 5))
@@ -935,8 +927,6 @@ class BlogEditor:
             "creator": fields["creator"].get().strip(),
             "year": fields["year"].get().strip(),
             "platform": fields["platform"].get().strip(),
-            "progress": fields["progress"].get().strip(),
-            "tags": fields["tags"].get().strip(),
             "one_liner": fields["one_liner"].get().strip(),
             "cover": fields["cover"].get().strip(),
         }
@@ -951,7 +941,7 @@ class BlogEditor:
             fields["type"].set(m.group(1).strip())
         for label, key in [
             ("原名", "original_title"), ("主创", "creator"), ("年份", "year"),
-            ("平台", "platform"), ("进度", "progress"), ("标签", "tags")
+            ("平台", "platform")
         ]:
             m = re.search(rf'<tr><th>{label}</th><td>(.*?)</td></tr>', content)
             fields[key].set(m.group(1).strip() if m else "")
@@ -996,8 +986,6 @@ class BlogEditor:
         add_row("年份", rv.get("year"))
         add_row("类型", REVIEW_TYPE_LABELS.get(rv["type"], rv["type"]))
         add_row("平台", rv.get("platform"))
-        add_row("进度", rv.get("progress"))
-        add_row("标签", rv.get("tags"))
         meta_rows = "\n".join(rows)
 
         return REVIEW_DETAIL_TEMPLATE.format(
@@ -1014,7 +1002,7 @@ class BlogEditor:
         icon = REVIEW_TYPE_ICONS.get(rv["type"], "🎬")
         href = f'posts/reviews/{rv["slug"]}.html'
         cover_inner = f'<img src="{rv["cover"]}" alt="">' if rv.get("cover") else f'<span>{icon}</span>'
-        meta_bits = " · ".join(x for x in [rv.get("creator"), rv.get("year"), rv.get("platform"), rv.get("progress")] if x)
+        meta_bits = " · ".join(x for x in [rv.get("creator"), rv.get("year"), rv.get("platform")] if x)
         one = rv.get("one_liner", "")
         one_html = f'\n                <p class="review-one">{one}</p>' if one else ""
         return f'''        <div class="entry review-card" data-type="{rv['type']}" data-verdict="{verdict}">
