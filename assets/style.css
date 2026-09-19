@@ -380,6 +380,14 @@ h1 {
     display: block;
 }
 
+/* 有封面时 <img> 直接带 .review-hero-cover 类（编辑器生成的结构） */
+img.review-hero-cover {
+    width: 160px;
+    height: 213px;
+    object-fit: cover;
+    display: block;
+}
+
 .review-hero-meta {
     flex: 1;
     min-width: 220px;
