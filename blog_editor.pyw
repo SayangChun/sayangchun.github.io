@@ -112,7 +112,6 @@ REVIEW_DETAIL_TEMPLATE = '''<!DOCTYPE html>
         <a class="back-link" href="../../reviews.html">&larr; 返回评测</a>
 
         <h1>{title}</h1>
-        <p class="entry-date">评测于 {date}</p>
 
         <div class="review-hero">
             {cover_html}
@@ -197,11 +196,14 @@ class BlogEditor:
         row2 = ttk.Frame(tab)
         row2.pack(fill=tk.X, pady=(0, 8))
 
-        ttk.Label(row2, text="日期:").pack(side=tk.LEFT, padx=(0, 5))
+        self.new_date_label = ttk.Label(row2, text="日期:")
+        self.new_date_label.pack(side=tk.LEFT, padx=(0, 5))
         self.new_date = tk.StringVar(value=datetime.now().strftime("%Y年%m月%d日"))
-        ttk.Entry(row2, textvariable=self.new_date, width=20).pack(side=tk.LEFT, padx=(0, 20))
+        self.new_date_entry = ttk.Entry(row2, textvariable=self.new_date, width=20)
+        self.new_date_entry.pack(side=tk.LEFT, padx=(0, 20))
 
-        ttk.Label(row2, text="文件名:").pack(side=tk.LEFT, padx=(0, 5))
+        self.new_slug_label = ttk.Label(row2, text="文件名:")
+        self.new_slug_label.pack(side=tk.LEFT, padx=(0, 5))
         self.new_slug = tk.StringVar()
         ttk.Entry(row2, textvariable=self.new_slug, width=35).pack(side=tk.LEFT, fill=tk.X, expand=True)
 
@@ -245,12 +247,16 @@ class BlogEditor:
         self._show_new_review_fields(self.new_category.get() == "reviews")
 
     def _show_new_review_fields(self, show):
-        """评测类型：隐藏摘要行，显示评测属性区"""
+        """评测类型：隐藏「日期」「摘要」两行，显示评测属性区（日期由「完成时间」承载）"""
         if show:
+            self.new_date_label.pack_forget()
+            self.new_date_entry.pack_forget()
             self.new_summary_row.pack_forget()
             self.new_review_frame.pack(fill=tk.X, pady=(0, 8), before=self.new_content_frame)
         else:
             self.new_review_frame.pack_forget()
+            self.new_date_label.pack(side=tk.LEFT, padx=(0, 5), before=self.new_slug_label)
+            self.new_date_entry.pack(side=tk.LEFT, padx=(0, 20), before=self.new_slug_label)
             self.new_summary_row.pack(fill=tk.X, pady=(0, 8), before=self.new_content_frame)
     
     def new_preview(self):
@@ -278,7 +284,7 @@ class BlogEditor:
 
         if category == "reviews":
             rv = self._collect_review_fields(self.new_review_fields)
-            rv.update({"title": title, "slug": slug, "date": date})
+            rv.update({"title": title, "slug": slug})
             html = self._generate_review_html(rv, content)
             (posts_dir / f"{slug}.html").write_text(html, encoding="utf-8")
             self._update_review_listing(rv)
@@ -366,12 +372,12 @@ class BlogEditor:
         self.edit_title = tk.StringVar()
         ttk.Entry(row2, textvariable=self.edit_title, width=45).pack(side=tk.LEFT, fill=tk.X, expand=True)
 
-        row3 = ttk.Frame(edit_frame)
-        row3.pack(fill=tk.X, pady=(0, 5))
+        self.edit_date_row = ttk.Frame(edit_frame)
+        self.edit_date_row.pack(fill=tk.X, pady=(0, 5))
 
-        ttk.Label(row3, text="日期:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Label(self.edit_date_row, text="日期:").pack(side=tk.LEFT, padx=(0, 5))
         self.edit_date = tk.StringVar()
-        ttk.Entry(row3, textvariable=self.edit_date, width=20).pack(side=tk.LEFT)
+        ttk.Entry(self.edit_date_row, textvariable=self.edit_date, width=20).pack(side=tk.LEFT)
 
         # 摘要行（评测分类时隐藏，由"一句话短评"代替）
         self.edit_summary_row = ttk.Frame(edit_frame)
@@ -413,10 +419,12 @@ class BlogEditor:
         """切换分类：刷新文章列表 + 评测/普通字段区切换"""
         is_review = self.edit_category.get() == "reviews"
         if is_review:
+            self.edit_date_row.pack_forget()
             self.edit_summary_row.pack_forget()
             self.edit_review_frame.pack(fill=tk.X, pady=(0, 5), before=self.edit_content_frame)
         else:
             self.edit_review_frame.pack_forget()
+            self.edit_date_row.pack(fill=tk.X, pady=(0, 5), before=self.edit_summary_row)
             self.edit_summary_row.pack(fill=tk.X, pady=(0, 5), before=self.edit_content_frame)
         self.edit_load_list()
     
@@ -446,11 +454,10 @@ class BlogEditor:
 
         if title_match:
             self.edit_title.set(title_match.group(1))
-        if date_match:
-            d = date_match.group(1)
-            if category == "reviews":
-                d = re.sub(r'^评测于\s*', '', d)
-            self.edit_date.set(d)
+        if category == "reviews":
+            self.edit_date.set("")          # 评测不再使用独立日期字段，日期由「完成时间」承载
+        elif date_match:
+            self.edit_date.set(date_match.group(1))
         if content_match:
             raw = content_match.group(1)
             raw = re.sub(r'<p[^>]*>', '', raw)
@@ -529,7 +536,7 @@ class BlogEditor:
             file_path = BLOG_ROOT / "posts" / category / f"{post_name}.html"
             if category == "reviews":
                 rv = self._collect_review_fields(self.edit_review_fields)
-                rv.update({"title": title, "slug": post_name, "date": date})
+                rv.update({"title": title, "slug": post_name})
                 html = self._generate_review_html(rv, content)
             else:
                 html = self._generate_html(category, title, date, content)
@@ -563,7 +570,8 @@ class BlogEditor:
         date = self.edit_date.get().strip()
         summary = self.edit_summary.get().strip()
 
-        if not all([post_name, title, date]):
+        ok = all([post_name, title]) if category == "reviews" else all([post_name, title, date])
+        if not ok:
             messagebox.showwarning("警告", "请填写完整信息")
             return
 
@@ -575,7 +583,7 @@ class BlogEditor:
 
         if category == "reviews":
             rv = self._collect_review_fields(self.edit_review_fields)
-            rv.update({"title": title, "slug": post_name, "date": date})
+            rv.update({"title": title, "slug": post_name})
             self._update_review_listing(rv)
         else:
             self._update_listing(category, post_name, title, date, summary or title)
@@ -1037,7 +1045,7 @@ class BlogEditor:
         meta_rows = "\n".join(rows)
 
         return REVIEW_DETAIL_TEMPLATE.format(
-            title=rv["title"], date=rv.get("date", ""),
+            title=rv["title"],
             cover_html=cover_html, verdict_html=verdict_html,
             meta_rows=meta_rows, content=content
         )
