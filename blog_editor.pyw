@@ -8,7 +8,6 @@ import tkinter as tk
 from tkinter import ttk, messagebox, scrolledtext, filedialog
 import os
 import re
-import json
 import shutil
 from pathlib import Path
 from datetime import datetime
@@ -119,14 +118,15 @@ REVIEW_DETAIL_TEMPLATE = '''<!DOCTYPE html>
             {cover_html}
             <div class="review-hero-meta">
                 {verdict_html}
-{meta_html}
+                <table class="review-meta-table">
+{meta_rows}
+                </table>
             </div>
         </div>
 
         <div class="entry-content">
             {content}
         </div>
-{keep_comment}
     </div>
 </body>
 </html>
@@ -967,44 +967,31 @@ class BlogEditor:
 
     def _load_review_fields(self, fields, content, post_name):
         """从评测详情页 HTML 解析并回填表单。"""
-        # 1) 不在页面展示的作品信息：优先从注释回读
-        hidden = {}
-        m = re.search(r'<!-- review-fields: (\{.*?\}) -->', content, re.DOTALL)
-        if m:
-            try:
-                hidden = json.loads(m.group(1))
-            except (ValueError, TypeError):
-                hidden = {}
-
-        if hidden:
-            for key in ("original_title", "creator", "publisher", "release_date", "platform"):
-                fields[key].set(hidden.get(key, ""))
-            fields["type"].set(REVIEW_TYPE_LABELS.get(hidden.get("type", ""), "游戏"))
-        else:
-            # 兼容旧版详情页：字段直接写在元信息表里
-            m = re.search(r'<tr><th>类型</th><td>(.*?)</td></tr>', content)
-            if m:
-                fields["type"].set(m.group(1).strip())
-            for label, key in [("原名", "original_title"), ("发行商", "publisher"),
-                               ("发行日期", "release_date"), ("平台", "platform")]:
-                mm = re.search(rf'<tr><th>{label}</th><td>(.*?)</td></tr>', content)
-                fields[key].set(mm.group(1).strip() if mm else "")
-            mm = re.search(rf'<tr><th>(?:{CREATOR_LABEL_PATTERN})</th><td>(.*?)</td></tr>', content)
-            fields["creator"].set(mm.group(1).strip() if mm else "")
-            if not fields["type"].get():
-                fields["type"].set("游戏")
-
-        # 2) 页面展示字段：结论 / 总时数 / 完成时间
         m = re.search(r'class="review-verdict (up|down)"', content)
         if m:
             fields["verdict"].set("recommended" if m.group(1) == "up" else "not-recommended")
-        for label, key in [("总时数", "hours"), ("完成时间", "finished_at")]:
+
+        m = re.search(r'<tr><th>类型</th><td>(.*?)</td></tr>', content)
+        fields["type"].set(m.group(1).strip() if m else "游戏")
+
+        for label, key in [
+            ("原名", "original_title"),
+            ("发行商", "publisher"),
+            ("发行日期", "release_date"),
+            ("平台", "platform"),
+            ("总时数", "hours"),
+            ("完成时间", "finished_at"),
+        ]:
             mm = re.search(rf'<tr><th>{label}</th><td>(.*?)</td></tr>', content)
             fields[key].set(mm.group(1).strip() if mm else "")
 
-        # 3) 封面与一句话短评
+        # 主创行按作品类型显示为 开发者 / 作者 / 导演 / 创作者
+        mm = re.search(rf'<tr><th>(?:{CREATOR_LABEL_PATTERN})</th><td>(.*?)</td></tr>', content)
+        fields["creator"].set(mm.group(1).strip() if mm else "")
+
         m = re.search(r'<img class="review-hero-cover" src="\.\./\.\./(assets/covers/[^"]+)"', content)
         fields["cover"].set(m.group(1) if m else "")
+
         listing_file = BLOG_ROOT / "reviews.html"
         if listing_file.exists():
             lc = listing_file.read_text(encoding="utf-8")
@@ -1034,28 +1021,25 @@ class BlogEditor:
         else:
             cover_html = f'<div class="review-hero-cover"><span>{icon}</span></div>'
 
-        # 页面只展示「总时数 / 完成时间」两项
+        # 详情页展示完整作品信息（列表卡片另做精简，见 _review_card_html）
         rows = []
         def add_row(label, value):
             if value:
                 rows.append(f"                    <tr><th>{label}</th><td>{value}</td></tr>")
+        add_row("原名", rv.get("original_title"))
+        add_row(CREATOR_LABELS.get(rv["type"], "主创"), rv.get("creator"))
+        add_row("发行商", rv.get("publisher"))
+        add_row("发行日期", rv.get("release_date"))
+        add_row("类型", REVIEW_TYPE_LABELS.get(rv["type"], rv["type"]))
+        add_row("平台", rv.get("platform"))
         add_row("总时数", rv.get("hours"))
         add_row("完成时间", rv.get("finished_at"))
-        if rows:
-            meta_html = '                <table class="review-meta-table">\n' + "\n".join(rows) + '\n                </table>'
-        else:
-            meta_html = ""
-
-        # 不展示但需保留的作品信息，写成注释供编辑器回读（不影响页面渲染）
-        hidden = {k: rv.get(k, "") for k in
-                  ("type", "original_title", "creator", "publisher", "release_date", "platform")
-                  if rv.get(k)}
-        keep_comment = f'        <!-- review-fields: {json.dumps(hidden, ensure_ascii=False)} -->' if hidden else ""
+        meta_rows = "\n".join(rows)
 
         return REVIEW_DETAIL_TEMPLATE.format(
             title=rv["title"], date=rv.get("date", ""),
             cover_html=cover_html, verdict_html=verdict_html,
-            meta_html=meta_html, keep_comment=keep_comment, content=content
+            meta_rows=meta_rows, content=content
         )
 
     def _review_card_html(self, rv):
