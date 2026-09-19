@@ -45,6 +45,17 @@ VERDICT_LABELS = {
     "not-recommended": "👎 不推荐",
 }
 
+# 详情页「主创」行按作品类型显示对应称谓
+CREATOR_LABELS = {
+    "game": "开发者",
+    "book": "作者",
+    "movie": "导演",
+    "anime": "导演",
+    "series": "导演",
+    "music": "创作者",
+}
+CREATOR_LABEL_PATTERN = "开发者|作者|导演|创作者|主创"
+
 # 单页面（无详情页，直接编辑）
 SINGLE_PAGES = {
     "index": {"name": "中文简历", "file": "index.html"},
@@ -858,8 +869,11 @@ class BlogEditor:
             "verdict": tk.StringVar(value="recommended"),
             "original_title": tk.StringVar(),
             "creator": tk.StringVar(),
-            "year": tk.StringVar(),
+            "publisher": tk.StringVar(),
+            "release_date": tk.StringVar(),
             "platform": tk.StringVar(),
+            "finished_at": tk.StringVar(),
+            "hours": tk.StringVar(),
             "one_liner": tk.StringVar(),
             "cover": tk.StringVar(),
         }
@@ -874,25 +888,35 @@ class BlogEditor:
 
         r2 = ttk.Frame(frame); r2.pack(fill=tk.X, pady=(0, 5))
         ttk.Label(r2, text="原名:").pack(side=tk.LEFT, padx=(0, 5))
-        ttk.Entry(r2, textvariable=fields["original_title"], width=24).pack(side=tk.LEFT, padx=(0, 18))
+        ttk.Entry(r2, textvariable=fields["original_title"], width=22).pack(side=tk.LEFT, padx=(0, 18))
         ttk.Label(r2, text="主创:").pack(side=tk.LEFT, padx=(0, 5))
-        ttk.Entry(r2, textvariable=fields["creator"], width=24).pack(side=tk.LEFT, fill=tk.X, expand=True)
+        ttk.Entry(r2, textvariable=fields["creator"], width=22).pack(side=tk.LEFT, fill=tk.X, expand=True)
 
         r3 = ttk.Frame(frame); r3.pack(fill=tk.X, pady=(0, 5))
-        ttk.Label(r3, text="年份:").pack(side=tk.LEFT, padx=(0, 5))
-        ttk.Entry(r3, textvariable=fields["year"], width=8).pack(side=tk.LEFT, padx=(0, 25))
-        ttk.Label(r3, text="平台:").pack(side=tk.LEFT, padx=(0, 5))
-        ttk.Entry(r3, textvariable=fields["platform"], width=18).pack(side=tk.LEFT, fill=tk.X, expand=True)
+        ttk.Label(r3, text="发行商:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Entry(r3, textvariable=fields["publisher"], width=22).pack(side=tk.LEFT, padx=(0, 18))
+        ttk.Label(r3, text="发行日期:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Entry(r3, textvariable=fields["release_date"], width=22).pack(side=tk.LEFT, fill=tk.X, expand=True)
+
+        r4 = ttk.Frame(frame); r4.pack(fill=tk.X, pady=(0, 5))
+        ttk.Label(r4, text="平台:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Entry(r4, textvariable=fields["platform"], width=22).pack(side=tk.LEFT, padx=(0, 18))
+        ttk.Label(r4, text="总时数:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Entry(r4, textvariable=fields["hours"], width=22).pack(side=tk.LEFT, fill=tk.X, expand=True)
 
         r5 = ttk.Frame(frame); r5.pack(fill=tk.X, pady=(0, 5))
-        ttk.Label(r5, text="一句话短评:").pack(side=tk.LEFT, padx=(0, 5))
-        ttk.Entry(r5, textvariable=fields["one_liner"], width=50).pack(side=tk.LEFT, fill=tk.X, expand=True)
+        ttk.Label(r5, text="完成时间:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Entry(r5, textvariable=fields["finished_at"], width=50).pack(side=tk.LEFT, fill=tk.X, expand=True)
 
-        r6 = ttk.Frame(frame); r6.pack(fill=tk.X)
-        ttk.Label(r6, text="封面:").pack(side=tk.LEFT, padx=(0, 5))
-        ttk.Entry(r6, textvariable=fields["cover"], width=40).pack(side=tk.LEFT, fill=tk.X, expand=True)
+        r6 = ttk.Frame(frame); r6.pack(fill=tk.X, pady=(0, 5))
+        ttk.Label(r6, text="一句话短评:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Entry(r6, textvariable=fields["one_liner"], width=50).pack(side=tk.LEFT, fill=tk.X, expand=True)
+
+        r7 = ttk.Frame(frame); r7.pack(fill=tk.X)
+        ttk.Label(r7, text="封面:").pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Entry(r7, textvariable=fields["cover"], width=40).pack(side=tk.LEFT, fill=tk.X, expand=True)
         if slug_getter:
-            ttk.Button(r6, text="浏览…", command=lambda: self._pick_cover(fields["cover"], slug_getter)).pack(side=tk.LEFT, padx=(8, 0))
+            ttk.Button(r7, text="浏览…", command=lambda: self._pick_cover(fields["cover"], slug_getter)).pack(side=tk.LEFT, padx=(8, 0))
 
         return frame, fields
 
@@ -925,8 +949,11 @@ class BlogEditor:
             "verdict": fields["verdict"].get() or "recommended",
             "original_title": fields["original_title"].get().strip(),
             "creator": fields["creator"].get().strip(),
-            "year": fields["year"].get().strip(),
+            "publisher": fields["publisher"].get().strip(),
+            "release_date": fields["release_date"].get().strip(),
             "platform": fields["platform"].get().strip(),
+            "finished_at": fields["finished_at"].get().strip(),
+            "hours": fields["hours"].get().strip(),
             "one_liner": fields["one_liner"].get().strip(),
             "cover": fields["cover"].get().strip(),
         }
@@ -940,11 +967,18 @@ class BlogEditor:
         if m:
             fields["type"].set(m.group(1).strip())
         for label, key in [
-            ("原名", "original_title"), ("主创", "creator"), ("年份", "year"),
-            ("平台", "platform")
+            ("原名", "original_title"),
+            ("发行商", "publisher"),
+            ("发行日期", "release_date"),
+            ("平台", "platform"),
+            ("完成时间", "finished_at"),
+            ("总时数", "hours"),
         ]:
             m = re.search(rf'<tr><th>{label}</th><td>(.*?)</td></tr>', content)
             fields[key].set(m.group(1).strip() if m else "")
+        # 主创行按作品类型显示为 开发者 / 作者 / 导演 / 创作者
+        m = re.search(rf'<tr><th>(?:{CREATOR_LABEL_PATTERN})</th><td>(.*?)</td></tr>', content)
+        fields["creator"].set(m.group(1).strip() if m else "")
         m = re.search(r'<img class="review-hero-cover" src="\.\./\.\./(assets/covers/[^"]+)"', content)
         fields["cover"].set(m.group(1) if m else "")
         # one-liner 从列表页卡片读取
@@ -982,10 +1016,13 @@ class BlogEditor:
             if value:
                 rows.append(f"                    <tr><th>{label}</th><td>{value}</td></tr>")
         add_row("原名", rv.get("original_title"))
-        add_row("主创", rv.get("creator"))
-        add_row("年份", rv.get("year"))
+        add_row(CREATOR_LABELS.get(rv["type"], "主创"), rv.get("creator"))
+        add_row("发行商", rv.get("publisher"))
+        add_row("发行日期", rv.get("release_date"))
         add_row("类型", REVIEW_TYPE_LABELS.get(rv["type"], rv["type"]))
         add_row("平台", rv.get("platform"))
+        add_row("完成时间", rv.get("finished_at"))
+        add_row("总时数", rv.get("hours"))
         meta_rows = "\n".join(rows)
 
         return REVIEW_DETAIL_TEMPLATE.format(
@@ -1002,7 +1039,9 @@ class BlogEditor:
         icon = REVIEW_TYPE_ICONS.get(rv["type"], "🎬")
         href = f'posts/reviews/{rv["slug"]}.html'
         cover_inner = f'<img src="{rv["cover"]}" alt="">' if rv.get("cover") else f'<span>{icon}</span>'
-        meta_bits = " · ".join(x for x in [rv.get("creator"), rv.get("year"), rv.get("platform")] if x)
+        meta_bits = " · ".join(x for x in [
+            rv.get("creator"), rv.get("release_date"), rv.get("platform"), rv.get("hours")
+        ] if x)
         one = rv.get("one_liner", "")
         one_html = f'\n                <p class="review-one">{one}</p>' if one else ""
         return f'''        <div class="entry review-card" data-type="{rv['type']}" data-verdict="{verdict}">
