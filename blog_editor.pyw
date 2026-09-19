@@ -57,6 +57,13 @@ CREATOR_LABELS = {
 }
 CREATOR_LABEL_PATTERN = "开发者|作者|导演|创作者|主创"
 
+
+def strip_clock(text):
+    """去掉日期末尾的时分（如「上午 11:23」），只保留日期部分，与 Steam 口径一致。"""
+    if not text:
+        return ""
+    return re.sub(r'\s*(?:上午|下午|凌晨|中午|早上|晚上)?\s*\d{1,2}:\d{2}(?::\d{2})?\s*$', '', text).strip()
+
 # 单页面（无详情页，直接编辑）
 SINGLE_PAGES = {
     "index": {"name": "中文简历", "file": "index.html"},
@@ -952,7 +959,7 @@ class BlogEditor:
             "publisher": fields["publisher"].get().strip(),
             "release_date": fields["release_date"].get().strip(),
             "platform": fields["platform"].get().strip(),
-            "finished_at": fields["finished_at"].get().strip(),
+            "finished_at": strip_clock(fields["finished_at"].get().strip()),
             "hours": fields["hours"].get().strip(),
             "one_liner": fields["one_liner"].get().strip(),
             "cover": fields["cover"].get().strip(),
@@ -1060,7 +1067,7 @@ class BlogEditor:
         cover_inner = (f'<img src="{rv["cover"]}" alt="{rv["title"]} 封面">'
                        if rv.get("cover") else f'<span>{icon}</span>')
         meta_bits = " · ".join(x for x in [
-            rv.get("hours"),
+            (f'总时数 {rv["hours"]}' if rv.get("hours") else ""),
             (f'完成于 {rv["finished_at"]}' if rv.get("finished_at") else ""),
         ] if x)
         meta_html = f'\n                <p class="review-meta">{meta_bits}</p>' if meta_bits else ""
