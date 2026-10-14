@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIRE-Progress · FIRE 进度看板 / SayangChun</title>
+    <link rel="icon" type="image/png" href="../../avatar.png">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <script src="../../assets/nav.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a class="back-link" href="../../achievements.html">&larr; 返回成果</a>
+
+        <h1>FIRE-Progress · FIRE 进度看板</h1>
+        <p class="entry-date">2026年10月</p>
+
+        <div class="entry-content">
+            <p>把「离 FIRE 还有多远」做成一块每天自动更新的看板。统计三项<strong>长期不动用</strong>的资产——比特币、标普500基金、应急金——由 GitHub Actions 每小时轮询两个持仓仓库与行情，重算进度并回写 README。</p>
+            <p><strong>当前状态（2026-10-14）：</strong>FIRE 目标 <strong>¥420,558.14</strong>，当前资产 <strong>¥14,936.29</strong>，完成度 <strong>3.551%</strong>，距离目标 ¥405,621.85；累计投入 ¥12,451.84，累计盈亏 <strong>+¥2,484.45（+19.95%）</strong>。资产构成：比特币 95.4%、标普500基金 4.6%、应急金 0%（计划 2026-11-01 起每月存 ¥200）。</p>
+            <p><strong>FIRE 目标怎么来的：</strong>不是拍脑袋的数字，而是由一份 FIRE 生活规划<strong>逐项相加</strong>得到——FIRE 后按「黑龙江 · 单人 · 租房 · 极简」口径，共 19 项、合计 <strong>¥1,507/月</strong>，再按 <strong>4.3% 提取率</strong>换算，得到「月开销 × 12 ÷ 提取率 = ¥420,558.14」。改任何一项，目标都会自动重算。一次性落地支出（租房押金 / 搬家运输 / 家具家电 / 过冬装备，共 ¥15,000）<strong>不摊进月开销</strong>，因为它不产生永续现金流，摊进去会同时虚增月开销与目标。</p>
+            <p><strong>看什么图：</strong>进度曲线是每日完成度快照，按当天记录的原值连线、不回填不重算，图中竖虚线处是<strong>口径调整</strong>——分母变了而不是资产变了，台阶可追溯；收益曲线分两块面板，上面板是累计投入（虚线）对当前市值（实线）、缺口即盈亏，下面板是累计收益率。两张要一起看：<strong>加仓会机械性拉低收益率</strong>（分母变大、分子不变），所以收益率下降不一定代表亏了。</p>
+            <p><strong>口径边界：</strong>统计范围是「长期不动用」而不是「能不能变现」——日常现金要参与周转，不计入；应急金虽然也是现金类，但它是锁定的专项资金，性质上更接近仓位，所以计入。由此有一条推论：<strong>卖出资产不会让进度失真，卖出后资金离开这个范围才会</strong>。看到进度下跌，先看钱去哪了——变成现金放着是假信号，花掉了才是真减少。</p>
+            <p><strong>数据节奏：</strong>标普500基金由 Actions 每小时自动抓取；比特币持仓来自 <a href="https://github.com/SayangChun/0.1BTC" target="_blank" rel="noopener noreferrer">0.1BTC</a> 的周度手动快照，<strong>数量滞后、估值实时</strong>，看板顶部会显示快照日期与距今天数；应急金只能手动维护，配了「超过 45 天没核对」的告警。</p>
+            <p>配套的完整规划书覆盖城市对比、租房 vs 买房测算、一周食谱与采购清单、不交社保前提下的医疗保障路径、敏感性分析与风险清单。</p>
+            <p>仓库：<a href="https://github.com/SayangChun/FIRE-Progress" target="_blank" rel="noopener noreferrer">github.com/SayangChun/FIRE-Progress</a></p>
+            <p class="ai-note">说明：项目说明与数字根据仓库 README 自动生成段（2026-10-14）与 2026-09-24～10-13 提交记录由 AI 整理扩写；数据为个人口径，后续以仓库为准。本仓库为个人资产记录，不构成投资建议。</p>
+        </div>
+    </div>
+</body>
+</html>

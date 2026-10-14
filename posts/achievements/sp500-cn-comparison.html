@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sp500-cn-comparison · 境内标普500标的穿透对比 / SayangChun</title>
+    <link rel="icon" type="image/png" href="../../avatar.png">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <script src="../../assets/nav.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a class="back-link" href="../../achievements.html">&larr; 返回成果</a>
+
+        <h1>sp500-cn-comparison · 境内标普500标的穿透对比</h1>
+        <p class="entry-date">2026年9月</p>
+
+        <div class="entry-content">
+            <p>把中国境内跟踪标普500的 <strong>10 只标的</strong>拉到同一张表上比：从基金<strong>中期报告</strong>穿透出「真实参与率 / 加权综合费率 / 场内溢价」，再做五维加权打分。方法论来自 B 站 @林怀瑾LHJ 拆解纳指100场外基金业绩差异的那套方法，本项目把它映射到标普500。</p>
+            <p><strong>为什么要穿透：</strong>同一指数、同一区间、同一币种，场外产品的半年净值增长率最多差 1.35 个百分点，三年差到 10.9 个百分点。差异不来自「选股」，而来自三件被披露口径藏起来的事——净值里有多少钱真的买了指数（参与率）、页面上写的费率是不是实收（加权综合费率）、场内买入要多付多少溢价。</p>
+            <p><strong>几个结论：</strong>场外产品没有一只做到 100% 参与指数（穿透后 94.03%–95.19%，差额停在现金和应收款里，牛市里就是少赚的钱）；场内 ETF 期末全部处于溢价（1.53%–3.52%），按场内价买入、真正买到指数敞口的钱只有 96.4%–98.4%；费率与收益几乎是两件事（Spearman 秩相关仅 0.30）——博时 ETF 费率只排第 6 但三年收益排第 1，摩根 A 费率全场最低而收益只排第 7。</p>
+            <p><strong>量化排名（五维加权，满分 100）：</strong>权重为长期收益兑现 40 / 真实敞口 20 / 持有成本 20 / 规模与稳定 12 / 买入摩擦 8。<strong>前四名全是场内 ETF</strong>——华夏 91.04、博时 90.08、南方 87.45、国泰 83.98，与场外（最高 57.95）之间存在约 <strong>26 分的断层</strong>，断层主要来自「真实敞口」和「持有成本」两项。另做了三组替代权重的稳健性检验：前四名与后三名在所有权重下都不变，只有中段会浮动 1–2 名。</p>
+            <p><strong>工程与交付：</strong>纯 Python 流水线（下载定期报告 → 解析 PDF → 抓行情与份额净值 → 穿透计算 → 打分 → 生成图表 → 生成站点）。图表用<strong>手写 SVG</strong> 生成，不依赖 matplotlib 与中文字体，体积只有几十 KB、任何缩放下都清晰，能被 GitHub 直接内嵌渲染。另附一个备用推送工具，在 <code>git push</code> 被网络代理阻断时改走 GitHub API 提交。</p>
+            <p><strong>已做的交叉验证：</strong>中报 3.2.1 披露的「过去六个月份额净值增长率」与独立拉取的日净值复算结果逐只核对一致（含分红调整）；场内收盘价用东方财富与腾讯行情两个源逐点核对；期末净资产均满足勾稽关系。</p>
+            <p>局限也写在明面上：业绩比较基准口径不统一（同样标普500，博时写 NTR 得 6.60%、国泰/南方只有 6.16%），参与率只有期末一个时点，联接基金跑赢自家目标 ETF 的现象未解释，QDII 溢价率存在 T+1 披露时滞的口径陷阱。</p>
+            <p>在线版：<a href="https://4184f4d3d49841bbbea5ce00b8ba3263.sg2.agentos-app.run" target="_blank" rel="noopener noreferrer">打开即用（无需下载）</a><br>
+            仓库：<a href="https://github.com/SayangChun/sp500-cn-comparison" target="_blank" rel="noopener noreferrer">github.com/SayangChun/sp500-cn-comparison</a></p>
+            <p class="ai-note">说明：项目说明与结论根据仓库 README 与 2026-09-22～23 提交记录由 AI 整理扩写；数据截至 2026-06-30 中报，受口径差异影响，请当区间参考。本项目仅作公开数据的整理与结构化对比，不构成投资建议。</p>
+        </div>
+    </div>
+</body>
+</html>

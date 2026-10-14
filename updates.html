@@ -14,6 +14,106 @@
 
         <div class="entry">
             <div class="entry-header">
+                <span class="entry-title">FIRE-Progress：新增收益曲线与应急金，生活规划逐项收紧</span>
+                <span class="entry-date">2026年10月13日</span>
+            </div>
+            <div class="entry-content">
+                <p>继续迭代 <a href="https://github.com/SayangChun/FIRE-Progress" target="_blank" rel="noopener noreferrer">FIRE-Progress</a>：新增<strong>收益曲线</strong>（上面板累计投入 vs 当前市值，下面板累计收益率），并把口径说明写清——加仓会机械性拉低收益率，收益率下降不一定是亏了；新增第三项资产<strong>应急金（支付宝小荷包）</strong>，计划 2026-11-01 起每月存 ¥200，看板只读实际余额、绝不按公式推算。</p>
+                <p>生活规划侧逐项收紧：食品 ¥319→¥300、日用品 ¥28→¥22，<strong>手机与电脑明确不换新</strong>，整组移出「必然发生」支出。</p>
+                <p>当前 FIRE 目标 <strong>¥420,558.14</strong>、资产 <strong>¥14,936.29</strong>、完成度 <strong>3.551%</strong>；累计投入 ¥12,451.84，累计盈亏 <strong>+¥2,484.45（+19.95%）</strong>。代表提交：<a href="https://github.com/SayangChun/FIRE-Progress/commit/f3540732" target="_blank" rel="noopener noreferrer">f354073</a>（收益曲线）、<a href="https://github.com/SayangChun/FIRE-Progress/commit/7989f267" target="_blank" rel="noopener noreferrer">7989f26</a>（应急金）、<a href="https://github.com/SayangChun/FIRE-Progress/commit/2fa673ca" target="_blank" rel="noopener noreferrer">2fa673c</a>（手机电脑不换）</p>
+                <p class="ai-note">说明：根据仓库 README 自动生成段与 2026-10-09～13 提交记录由 AI 归纳撰写；数据为个人口径，不构成投资建议。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">标普500 场外额度收紧：可买份额降至约 20 元/日</span>
+                <span class="entry-date">2026年10月13日</span>
+            </div>
+            <div class="entry-content">
+                <p><a href="https://github.com/SayangChun/sp500-quota-watch" target="_blank" rel="noopener noreferrer">sp500-quota-watch</a> 监控到的额度继续收缩：14 只标普500场外基金里<strong>只剩 3 只可买</strong>（摩根 A / C 各 10 元/日，天弘 D 限大额且额度未公示），人民币份额合计从 9 月初的约 220 元/日降到<strong>约 20 元/日</strong>。博时、易方达、华夏、国泰的联接与 LOF 份额仍全部暂停申购，赎回均正常开放。</p>
+                <p>仓库：<a href="https://github.com/SayangChun/sp500-quota-watch" target="_blank" rel="noopener noreferrer">github.com/SayangChun/sp500-quota-watch</a> · 快照提交：<a href="https://github.com/SayangChun/sp500-quota-watch/commit/ddfb2a93" target="_blank" rel="noopener noreferrer">ddfb2a9</a>（2026-10-13 23:13）</p>
+                <p class="ai-note">说明：根据仓库 README「实时额度」自动生成段（2026-10-13）与近期快照提交由 AI 归纳撰写；额度数据来自公开接口，仅供参考。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">FIRE-Progress 口径重算：月开销从拍脑袋改为逐项推导</span>
+                <span class="entry-date">2026年9月27日</span>
+            </div>
+            <div class="entry-content">
+                <p>把 FIRE 目标的分母从「拍脑袋的 ¥2,000/月」换成<strong>逐项推导</strong>：在 <code>config.yaml</code> 里列出 FIRE 后的生活规划 19 项，每一项都标注依据，逐项确认 11 条省钱措施，基准城市改为<strong>牡丹江（占位，最终城市未定）</strong>。最终口径 <strong>¥1,507/月 → 目标 ¥420,558.14</strong>（原 ¥558,139.53，降 24.6%）。</p>
+                <p>这次变更会让进度曲线出现一个台阶——那是<strong>分母变小</strong>造成的，不是资产真的涨了；因为每天的目标值都记在 <code>data/history.json</code> 里，台阶可追溯、不是数据错误。同时补充了完整规划书：城市对比（含取暖费计费口径换算）、租房 vs 买房测算、一周食谱与采购清单、不交社保前提下的医疗保障路径、敏感性分析与风险清单。</p>
+                <p>仓库：<a href="https://github.com/SayangChun/FIRE-Progress" target="_blank" rel="noopener noreferrer">github.com/SayangChun/FIRE-Progress</a></p>
+                <p class="ai-note">说明：根据仓库 README 与 2026-09-27 提交记录由 AI 归纳撰写。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">0.1BTC：新增人民币市值显示与每日自动更新</span>
+                <span class="entry-date">2026年9月27日</span>
+            </div>
+            <div class="entry-content">
+                <p>更新 <a href="https://github.com/SayangChun/0.1BTC" target="_blank" rel="noopener noreferrer">0.1BTC</a>：README 顶部新增<strong>当前市值（人民币）</strong>显示，并改为每日自动更新行情与市值，持仓数量仍按周度手动快照维护。</p>
+                <p>当前进度 <strong>0.02553981 / 0.1 BTC（25.54%）</strong>，约 <strong>¥14,346.12 / $2,143.10</strong>，全部持仓均价 $68,744.6/BTC（Binance $69,618.9、OKX $68,166.7）；冷钱包累计 0.015231 BTC。代表提交：<a href="https://github.com/SayangChun/0.1BTC/commit/e29d34a1" target="_blank" rel="noopener noreferrer">e29d34a</a></p>
+                <p class="ai-note">说明：根据仓库 README 自动生成段与 2026-09-27～10-13 提交记录由 AI 归纳撰写。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">开源 FIRE-Progress：把「离 FIRE 还有多远」做成每日看板</span>
+                <span class="entry-date">2026年9月24日</span>
+            </div>
+            <div class="entry-content">
+                <p>发布 <a href="https://github.com/SayangChun/FIRE-Progress" target="_blank" rel="noopener noreferrer">FIRE-Progress</a>：统计三项<strong>长期不动用</strong>的资产——比特币、标普500基金、应急金——由 GitHub Actions 每小时轮询两个持仓仓库与行情，重算进度并回写 README。比特币读 <a href="https://github.com/SayangChun/0.1BTC" target="_blank" rel="noopener noreferrer">0.1BTC</a>，基金读 <a href="https://github.com/SayangChun/sp500-dca" target="_blank" rel="noopener noreferrer">sp500-dca</a>。</p>
+                <p>口径上做了明确取舍：统计范围是「长期不动用」而不是「能不能变现」，所以日常现金不计入、锁定的应急金计入；由此推出「<strong>卖出资产不会让进度失真，卖出后资金离开这个范围才会</strong>」。计算无实质变化时不产生提交，避免刷屏。</p>
+                <p>仓库：<a href="https://github.com/SayangChun/FIRE-Progress" target="_blank" rel="noopener noreferrer">github.com/SayangChun/FIRE-Progress</a></p>
+                <p class="ai-note">说明：根据仓库 README 与 2026-09-24 起提交记录由 AI 归纳撰写；数据为个人口径，不构成投资建议。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">开源 sp500-cn-comparison：境内标普500标的穿透对比</span>
+                <span class="entry-date">2026年9月22日</span>
+            </div>
+            <div class="entry-content">
+                <p>发布 <a href="https://github.com/SayangChun/sp500-cn-comparison" target="_blank" rel="noopener noreferrer">sp500-cn-comparison</a>：把境内跟踪标普500的 10 只标的从中期报告<strong>穿透</strong>出「真实参与率 / 加权综合费率 / 场内溢价」，再做五维加权打分排名。方法论映射自 B 站 @林怀瑾LHJ 拆解纳指100场外基金业绩差异的那套方法。</p>
+                <p>核心发现：<strong>前四名全是场内 ETF</strong>（华夏 91.04 / 博时 90.08 / 南方 87.45 / 国泰 83.98），与场外之间存在约 <strong>26 分断层</strong>，断层主要来自「真实敞口」与「持有成本」；场外产品<strong>没有一只</strong>做到 100% 参与指数（穿透后 94.03%–95.19%，差额停在现金与应收款里）；场内 ETF 期末全部溢价（1.53%–3.52%），按场内价买入真正买到敞口的钱只有 96.4%–98.4%；费率与收益几乎是两件事（Spearman 秩相关仅 0.30）。</p>
+                <p>工程上用纯 Python 流水线，图表为<strong>手写 SVG</strong>（不依赖 matplotlib 与中文字体，几十 KB、可被 GitHub 直接内嵌），并提供在线版。代表提交：<a href="https://github.com/SayangChun/sp500-cn-comparison/commit/91752e3f" target="_blank" rel="noopener noreferrer">91752e3</a>（五维打分）、<a href="https://github.com/SayangChun/sp500-cn-comparison/commit/e5dfbb7c" target="_blank" rel="noopener noreferrer">e5dfbb7</a>（图表）</p>
+                <p class="ai-note">说明：根据仓库 README 与 2026-09-22～23 提交记录由 AI 归纳撰写；数据截至 2026-06-30 中报，受口径差异影响，请当区间参考，不构成投资建议。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">本站新增评测栏目，从 Steam 导入 17 条游戏评测</span>
+                <span class="entry-date">2026年9月19日</span>
+            </div>
+            <div class="entry-content">
+                <p>本站新增<strong>评测</strong>栏目：Steam 式二元评价（推荐 / 不推荐）配文字评论，覆盖游戏 / 书 / 电影 / 动画 / 剧集 / 音乐六类，详情页展示完整作品信息。首批从 Steam 批量导入 <strong>17 条游戏评测</strong>，并逐步收敛字段口径——去掉「进度」「标签」，用<strong>「完成时间」取代独立的「评测日期」</strong>，卡片只呈现结论 / 总时数 / 完成时间 / 评论，封面按 3:4 统一裁切。</p>
+                <p>评测页：<a href="https://sayangchun.github.io/reviews.html" target="_blank" rel="noopener noreferrer">sayangchun.github.io/reviews</a> · 代表提交：<a href="https://github.com/SayangChun/sayangchun.github.io/commit/5063aef" target="_blank" rel="noopener noreferrer">5063aef</a>（新增栏目）、<a href="https://github.com/SayangChun/sayangchun.github.io/commit/3e419ea" target="_blank" rel="noopener noreferrer">3e419ea</a>（批量导入）、<a href="https://github.com/SayangChun/sayangchun.github.io/commit/64d60b4" target="_blank" rel="noopener noreferrer">64d60b4</a>（完成时间口径）</p>
+                <p class="ai-note">说明：根据本站仓库 2026-09-19 提交记录由 AI 归纳撰写。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">BTC FIRE OS v0.2：绑定地址同步持仓</span>
+                <span class="entry-date">2026年9月18日</span>
+            </div>
+            <div class="entry-content">
+                <p>发布 <a href="https://github.com/SayangChun/BTC_FIRE_OS" target="_blank" rel="noopener noreferrer">BTC FIRE OS</a> <strong>v0.2.0 / v0.2.1</strong>：新增<strong>绑定地址同步 BTC 持仓</strong>，不必再手动逐个钱包录入；行情数据获取改为更容错的策略并加入演示数据，情景参数可编辑；站点页脚开始显示当前版本号，文档同步更新。</p>
+                <p>在线体验：<a href="https://btcfire.vercel.app" target="_blank" rel="noopener noreferrer">btcfire.vercel.app</a> · 代表提交：<a href="https://github.com/SayangChun/BTC_FIRE_OS/commit/24eea871" target="_blank" rel="noopener noreferrer">24eea87</a>（v0.2.0）、<a href="https://github.com/SayangChun/BTC_FIRE_OS/commit/ee74d394" target="_blank" rel="noopener noreferrer">ee74d39</a>（v0.2.1 同步持仓）</p>
+                <p class="ai-note">说明：根据仓库 README 与 2026-09-17～18 提交记录由 AI 归纳撰写。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
                 <span class="entry-title">本站重构：栏目收敛为简历 / 成果 / 动态 / 工作流</span>
                 <span class="entry-date">2026年9月15日</span>
             </div>
