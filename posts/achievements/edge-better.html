@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edge-Better · Edge 书签新标签页增强 / SayangChun</title>
+    <link rel="icon" type="image/png" href="../../avatar.png">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <script src="../../assets/nav.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a class="back-link" href="../../achievements.html">&larr; 返回成果</a>
+
+        <h1>Edge-Better · Edge 书签新标签页增强</h1>
+        <p class="entry-date">2026年10月</p>
+
+        <div class="entry-content">
+            <p>让 Edge 的书签<strong>在新标签页打开、当前页不被覆盖</strong>的浏览器扩展。起点是复刻一个闭源插件（Vitaliy Potapov 的「在新标签页中打开书签」，2.1 万+ 用户、微软精选认证），然后修掉它已知的问题、补上几个缺的功能。全部数据本地处理，不外发。</p>
+            <p><strong>核心机制：</strong>开启后为所有 http(s) 书签 URL 插入 <code>newtab@</code> 标记——放在 URL 的 userinfo 位置（<code>https://newtab@example.com/a</code>）。浏览器会把 userinfo 原样带进网络层，所以 <code>webNavigation</code> 能命中；而 userinfo 本身被浏览器忽略，这正是「关掉扩展后书签仍然能正常打开」的原因，也是「卸载安全」的来源——原插件卸载不还原会留下一批打不开的书签。</p>
+            <p><strong>增强与修复：</strong>覆盖空白新标签页（Edge 默认 NTP、about:blank 等）时不叠加新标签；第三方新标签页（如 Momentum）可用正则加入覆盖规则；中键 / Ctrl 点击不再多开一个空白标签；编辑书签 URL 去掉 <code>newtab@</code> 即可手动豁免，不会被自动补回；<code>javascript:</code>、<code>edge://</code>、<code>file:</code> 等非 http(s) 书签不改写。</p>
+            <p><strong>最难的一块是「当前页不能刷新」。</strong>MV3 的 Service Worker 空闲 30 秒就被回收，用户点书签时才唤醒它，冷启动几十到上百毫秒——那时导航早已提交，取消无从谈起。而且浏览器提交一次导航期间没空处理扩展的 <code>tabs.update</code>，晚一点点取消就会排到提交后面，退化成整页重载。项目用了三层防线：<code>chrome.alarms</code> 30 秒周期保活 SW 让多数点击走热路径；热路径上<strong>零 await</strong> 直接 <code>tabs.update</code> 到「原 URL + #fragment」（同文档导航，DOM 与滚动位置完整保留）；冷路径先开新标签、等导航落定后 <code>tabs.goBack()</code>，让原页从 bfcache 恢复而不是重载。</p>
+            <p>还踩过一个坑：<strong>不用 DNR</strong>。声明式规则的 block / redirect 都要先提交一个中间页，中间页一提交就卸载当前页，反而制造了要修的那个 bug。</p>
+            <p><strong>测试方式：</strong>MV3 在挂调试器时会保活 SW，所以开发者工具里根本看不到冷启动问题。项目自带 <code>tools/harness-real.cjs</code>，用 <code>child_process</code> 起一个<strong>不接任何调试器</strong>的独立 Edge，测试页自己把文档身份汇报给本地服务器，事后只看服务器日志判断：原页 load 次数是否不变、<code>pagehide/pageshow persisted=true</code> 是否成立、新标签是否只加载一次。</p>
+            <p>当前版本 v0.2.1。</p>
+            <p>仓库：<a href="https://github.com/SayangChun/Edge-Better" target="_blank" rel="noopener noreferrer">github.com/SayangChun/Edge-Better</a></p>
+            <p class="ai-note">说明：项目说明根据仓库 README、版本历史与 2026-10 提交记录由 AI 整理扩写；后续以仓库正文为准。</p>
+        </div>
+    </div>
+</body>
+</html>

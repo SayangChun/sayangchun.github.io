@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sp500-premium · 标普500场内基金真实溢价率 / SayangChun</title>
+    <link rel="icon" type="image/png" href="../../avatar.png">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <script src="../../assets/nav.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a class="back-link" href="../../achievements.html">&larr; 返回成果</a>
+
+        <h1>sp500-premium · 标普500场内基金真实溢价率</h1>
+        <p class="entry-date">2026年10月</p>
+
+        <div class="entry-content">
+            <p>一个只看<strong>标普500指数</strong>场内基金的真实溢价率看板——剔除信息科技、生物科技、医疗保健等衍生品，所有数值跟随行情实时刷新。</p>
+            <p><strong>它解决什么问题：</strong>QDII 基金净值按美股交易日披露、次日晚间才公布，而 A 股白天先交易。券商 App 显示的「溢价率」是拿今天的场内价除以<strong>昨晚</strong>的净值，隔夜美股的涨跌完全没算进去，会系统性高估或低估真实溢价。这个项目用标普500期货把这段时差补上，口径与交易所 IOPV、同花顺等平台一致。</p>
+            <p><strong>算法：</strong>两段式。①「隔夜段」用标普500现货日线（净值日收盘 → 最近美股收盘）；②「今日段」用 E-mini 期货实时价相对其昨结的变动——A 股时段美股现货休市，期货是唯一实时代理。合成出估算净值后再算真实溢价率，同时并列给出「T-1 净值口径」——也就是券商 App 常见的滞后口径，两者的差就是「隔夜美股 × 仓位」。实测与 HaoETF 官方实时口径逐只对比，误差 <strong>≤0.1%</strong>。</p>
+            <p><strong>跟踪范围（5 只）：</strong>513500 博时、159612 国泰、159655 华夏、513650 南方、161125 易方达 LOF。</p>
+            <p><strong>数据流：</strong>纯浏览器端秒级计算，无服务端——场内行情走东方财富 push2（3 秒）并以腾讯行情兜底，ES 期货走腾讯（10 秒）并以 Yahoo 兜底，标普现货日线 5 分钟一次，官方净值 5 分钟一次；另由 GitHub Actions 每 5 分钟抓一份数据快照，用于与 HaoETF 对照。</p>
+            <p><strong>一个容易被忽略的细节：</strong>仓位（真实持仓比例）不是假设值，而是由各基金净值日涨跌对指数日涨跌做<strong>带截距 OLS 回归</strong>估算——只取指数波动 ≥0.5% 的交易日，因为小波动日会被管理费、汇兑、申赎冲击污染。实测不同阈值下斜率落在 0.87 / 0.93 / 0.96，与 HaoETF 移动平均估算的 94%–95% 互证。页面滑块可在 85%–100% 之间做敏感性测算。</p>
+            <p>仓库：<a href="https://github.com/SayangChun/sp500-premium" target="_blank" rel="noopener noreferrer">github.com/SayangChun/sp500-premium</a></p>
+            <p class="ai-note">说明：项目说明根据仓库 README 与 2026-10 提交记录由 AI 整理扩写；后续以仓库正文为准。本项目仅做数据展示与口径研究，不构成投资建议——溢价率会随额度、情绪、指数波动快速变化，交易前请以基金公司公告与实时行情为准。</p>
+        </div>
+    </div>
+</body>
+</html>

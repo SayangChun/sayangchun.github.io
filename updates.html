@@ -14,6 +14,84 @@
 
         <div class="entry">
             <div class="entry-header">
+                <span class="entry-title">开源 sp500-premium：标普500场内基金的真实溢价率</span>
+                <span class="entry-date">2026年10月28日</span>
+            </div>
+            <div class="entry-content">
+                <p>发布 <a href="https://github.com/SayangChun/sp500-premium" target="_blank" rel="noopener noreferrer">sp500-premium</a>：一个只看标普500指数的场内基金<strong>真实溢价率</strong>看板。券商 App 显示的溢价率是「今天场内价 ÷ 昨晚净值」，隔夜美股的涨跌完全没算进去；项目用<strong>标普500期货</strong>把这段时差补上——隔夜段走现货日线、今日段走 E-mini 期货实时价，合成估算净值后再算溢价，口径与交易所 IOPV 一致，实测与 HaoETF 官方口径逐只对比误差 <strong>≤0.1%</strong>。</p>
+                <p>跟踪 5 只（513500 博时 / 159612 国泰 / 159655 华夏 / 513650 南方 / 161125 易方达 LOF）。仓位不是假设值，而是用<strong>带截距 OLS 回归</strong>从净值日涨跌对指数日涨跌估算，只取指数波动 ≥0.5% 的交易日（小波动日会被管理费、汇兑、申赎污染），实测斜率 0.87 / 0.93 / 0.96，与 HaoETF 的 94%–95% 互证。纯浏览器端秒级计算，无服务端。</p>
+                <p>仓库：<a href="https://github.com/SayangChun/sp500-premium" target="_blank" rel="noopener noreferrer">github.com/SayangChun/sp500-premium</a></p>
+                <p class="ai-note">说明：根据仓库 README 与 2026-10 提交记录由 AI 归纳撰写；仅做数据展示与口径研究，不构成投资建议。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">FIRE-Progress 上线静态站，并新增《为什么 FIRE》</span>
+                <span class="entry-date">2026年10月28日</span>
+            </div>
+            <div class="entry-content">
+                <p><a href="https://github.com/SayangChun/FIRE-Progress" target="_blank" rel="noopener noreferrer">FIRE-Progress</a> 生成静态页并部署到 GitHub Pages，现在可以直接打开看：<a href="https://sayangchun.github.io/FIRE-Progress/" target="_blank" rel="noopener noreferrer">sayangchun.github.io/FIRE-Progress</a>。同时补了第五份文档《为什么 FIRE》——讲动机、对工作的看法、对质疑的回应，并明确它<strong>不参与任何计算</strong>，改口径时不用动它。</p>
+                <p>顺带做了一轮文档清理：去掉 21 处语气词与口语化表达；并跑了一次<strong>数据一致性审计</strong>，修正过时数字、把两段式测试挂进 CI（此前曾出现执行清单仍写「赎回纳指」而决定已改为不卖）。代表提交：<a href="https://github.com/SayangChun/FIRE-Progress/commit/5a6c6a80" target="_blank" rel="noopener noreferrer">5a6c6a8</a>（静态站）、<a href="https://github.com/SayangChun/FIRE-Progress/commit/a69da77f" target="_blank" rel="noopener noreferrer">a69da77</a>（为什么 FIRE）、<a href="https://github.com/SayangChun/FIRE-Progress/commit/b407da55" target="_blank" rel="noopener noreferrer">b407da5</a>（一致性审计）</p>
+                <p class="ai-note">说明：根据仓库 README 与 2026-10-27～28 提交记录由 AI 归纳撰写。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">FIRE-Progress 改为「咖啡师 FIRE」：目标从 ¥420,558 降到 ¥205,953</span>
+                <span class="entry-date">2026年10月27日</span>
+            </div>
+            <div class="entry-content">
+                <p>FIRE 目标的计算公式换了：从「月开销 × 12 ÷ 提取率」改为<strong>「（月开销 − 兼职净收入）× 12 ÷ 提取率」</strong>——也就是<strong>咖啡师 FIRE</strong>。FIRE 后继续做低压力、随时能停的兼职，15 元/时 × 每周 12 小时，扣掉通勤、在外吃饭的差价与装备摊销后净收入 <strong>¥723/月</strong>，组合只需覆盖 <strong>¥738/月</strong>。</p>
+                <p>月开销同时从 ¥1,507（19 项）收到 <strong>¥1,461（17 项）</strong>：食品购物篮改为「线上为主 + 不炒菜一锅煮」，医疗与保障、风险缓冲两项合并为「医疗与应急」。最终目标 <strong>¥420,558.14 → ¥205,953.49</strong>，减半。把兼职开关关掉就退回传统 FIRE（目标 ¥407,720.93），两种口径随时可比。</p>
+                <p>仓库：<a href="https://github.com/SayangChun/FIRE-Progress" target="_blank" rel="noopener noreferrer">github.com/SayangChun/FIRE-Progress</a> · 代表提交：<a href="https://github.com/SayangChun/FIRE-Progress/commit/89fc4400" target="_blank" rel="noopener noreferrer">89fc440</a>（食品购物篮）</p>
+                <p class="ai-note">说明：根据仓库 README「计算口径」与口径变更记录由 AI 归纳撰写；数据为个人口径，不构成投资建议。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">FIRE-Progress 建立两段式路线，分子纳入纳指100</span>
+                <span class="entry-date">2026年10月27日</span>
+            </div>
+            <div class="entry-content">
+                <p>新增<strong>两段式路线</strong>：<strong>阶段 A</strong> 在牡丹江一个人独立生活、靠兼职收入加本金消耗；<strong>阶段 B</strong> 因长辈病情加重回北京、回归家庭，支出来源改为家庭共同资金。阶段 A 有明确退出条件，所以不需要永续——按年金现值算，2029-06 毕业时约 <strong>¥9.4 万</strong>本金即可。每周 3 天 × ¥15 只够撑 14.5 年（到 36.5 岁），4 天 × ¥17 能覆盖所有可能长度（81.7 年）；分界线是外公 92 岁，无法提前知道，所以看临界收益率：3 天方案需要 8.86%（高于标普500 长期实际回报 6.75%，是在赌），4 天方案只需 4.18%。这套框架<strong>不改变</strong> FIRE 目标与完成度，回答的是另一个问题：这笔钱够不够撑到该回去的那天。</p>
+                <p>同日<strong>分子纳入纳指100</strong>（018043 / 160213 / 040046，三只场外 QDII，已停止定投），资产从两项变三项。分子变大、目标不变，进度从 7.50% 跳到 9.62%——那是统计范围变了，不是资产涨了；因为竖线只标分母，这次跳升在曲线上不画线，改在文字里注明。</p>
+                <p>仓库：<a href="https://github.com/SayangChun/FIRE-Progress" target="_blank" rel="noopener noreferrer">github.com/SayangChun/FIRE-Progress</a> · 代表提交：<a href="https://github.com/SayangChun/FIRE-Progress/commit/c36eaaa8" target="_blank" rel="noopener noreferrer">c36eaaa</a>（两段式）、<a href="https://github.com/SayangChun/FIRE-Progress/commit/ee9f5ec6" target="_blank" rel="noopener noreferrer">ee9f5ec</a>（纳入纳指100）</p>
+                <p class="ai-note">说明：根据仓库 README「两段式路线」「计入范围」与 2026-10-27 提交记录由 AI 归纳撰写。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">sp500-cn-comparison 滚动更新：溢价扩大、排名换座</span>
+                <span class="entry-date">2026年10月25日</span>
+            </div>
+            <div class="entry-content">
+                <p>把数据滚动到 <strong>2026-10-22</strong>（三季报要到 10-31 才披露，所以参与率 / 费率 / 规模仍是中报口径，收益、溢价与申购状态已更新）。三件事变了：</p>
+                <p>① <strong>场内溢价大幅扩大</strong>：四只 QDII ETF 从一年前的 1.90%–5.27% 涨到 <strong>6.83%–8.15%</strong>，溢价调整后的有效参与率从 96%+ 降到 92.3%–93.5%；同期<strong>国泰 ETF（159612）暂停申购</strong>，新份额停止创设，这正是它溢价走高的直接原因。② <strong>座次换了</strong>：博时 ETF 反超登顶（89.70），华夏 ETF 从第 1 掉到第 4（91.04 → 74.14），因为近一年 7.43% 在四只 ETF 里垫底。③ <strong>国泰联接从第 10 跳到第 6</strong>，但它在 1–8 名之间跳，靠的是近一年 10.08% 这一个窗口，近三年 60.10% 只排第 6——不建议据此重仓。</p>
+                <p>顺手修了两处工程问题：README 与网站的过期日期，以及给图表文件名加上基准日（<code>rank_score-2026-10-22.svg</code>）绕开 GitHub 的图片缓存。仓库：<a href="https://github.com/SayangChun/sp500-cn-comparison" target="_blank" rel="noopener noreferrer">github.com/SayangChun/sp500-cn-comparison</a> · 代表提交：<a href="https://github.com/SayangChun/sp500-cn-comparison/commit/9262295b" target="_blank" rel="noopener noreferrer">9262295</a>、<a href="https://github.com/SayangChun/sp500-cn-comparison/commit/9bc9cf0c" target="_blank" rel="noopener noreferrer">9bc9cf0</a></p>
+                <p class="ai-note">说明：根据仓库 README 更新说明与 2026-10-25 提交记录由 AI 归纳撰写；不构成投资建议。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <span class="entry-title">开源 Edge-Better：让 Edge 书签在新标签页打开</span>
+                <span class="entry-date">2026年10月21日</span>
+            </div>
+            <div class="entry-content">
+                <p>发布 <a href="https://github.com/SayangChun/Edge-Better" target="_blank" rel="noopener noreferrer">Edge-Better</a>：复刻并增强一个闭源的 Edge 书签插件（2.1 万+ 用户、微软精选认证）。核心是给书签 URL 插入 <code>newtab@</code> 标记（放在 userinfo 位置，浏览器会带进网络层但本身忽略），再用 <code>webNavigation</code> 接管落点。增强部分包括：覆盖空白新标签页、第三方新标签页正则匹配、中键 / Ctrl 点击不再多开空白标签、卸载后书签仍可用、手动豁免、非 http(s) 书签不改写。</p>
+                <p>最难的是「点书签不能让当前页刷新」。MV3 的 Service Worker 空闲 30 秒就被回收，点书签时才唤醒，冷启动几十到上百毫秒，那时导航早已提交；而浏览器提交导航期间没空处理扩展的 <code>tabs.update</code>，晚一点取消就会退化成整页重载。项目用了三层防线：<code>chrome.alarms</code> 保活 SW、热路径<strong>零 await</strong> 直接跳到「原 URL + #fragment」（同文档导航，DOM 与滚动位置完整保留）、冷路径 <code>tabs.goBack()</code> 让原页从 bfcache 恢复。还踩过一个坑——不能用 DNR，因为 block / redirect 都要先提交中间页，中间页一提交就卸载当前页。</p>
+                <p>测试方式值得一提：MV3 挂调试器时会保活 SW，所以开发者工具里根本看不到冷启动问题。项目自带 <code>tools/harness-real.cjs</code>，起一个<strong>不接任何调试器</strong>的独立 Edge，测试页自己把文档身份汇报给本地服务器，事后只看服务器日志判断。当前 v0.2.1。</p>
+                <p>仓库：<a href="https://github.com/SayangChun/Edge-Better" target="_blank" rel="noopener noreferrer">github.com/SayangChun/Edge-Better</a></p>
+                <p class="ai-note">说明：根据仓库 README、版本历史与 2026-10 提交记录由 AI 归纳撰写。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
                 <span class="entry-title">FIRE-Progress：新增收益曲线与应急金，生活规划逐项收紧</span>
                 <span class="entry-date">2026年10月13日</span>
             </div>

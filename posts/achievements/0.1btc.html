@@ -20,8 +20,8 @@
             <p><strong>进度口径：</strong>目标 0.1 BTC 按<strong>全部持仓合计</strong>计算——交易所账户 + 冷钱包，<strong>不只算提现到冷钱包的那部分</strong>。目前比特币<strong>全部存放于交易所</strong>（Binance / OKX），已不再持有冷钱包部分。</p>
             <p><strong>记录范围：</strong>用 <code>data/holdings.csv</code> 记录各账户的<strong>全部持仓快照</strong>，并计算 Binance / OKX 分账户均价与合计均价；早期另有 <code>transactions.csv</code> 记录提现明细。流程是编辑 CSV → 运行 <code>python scripts/update_readme.py</code> → 提交推送；脚本自动刷新 README 进度总览、持仓表、SVG 累计图与明细。</p>
             <p><strong>图表说明：</strong>以首次购买日 2026-03-27 为作图 0 起点；橙线为全部持仓快照时序，灰虚线为定投参考（连接图中左下角与右上角，线性进度）；横轴按真实时间比例，最右端为目标日 2029-06-01（仅作轴端，不绘制该日数据点）；纵轴默认 0 → 0.1 BTC。GitHub 直接显示 SVG，无需部署网页。</p>
-            <p><strong>2026-09-27 起</strong>新增<strong>当前市值（人民币）</strong>显示，并改为每日自动更新行情与市值；持仓数量仍按周度手动快照维护，因此是「数量滞后、估值实时」。</p>
-            <p>截至 2026-10-11 快照（价格更新于 2026-10-13）：全部持仓 <strong>0.02553981 / 0.1 BTC（25.54%）</strong>，约合 <strong>¥14,346.12 / $2,143.10</strong>，距离目标还差 0.07446019 BTC；全部持仓均价 <strong>$68,744.6/BTC</strong>（Binance $69,618.9、OKX $68,166.7）。持仓全部在交易所，无冷钱包部分。</p>
+            <p><strong>2026-09-27 起</strong>新增<strong>当前市值（人民币）</strong>显示，并改为每日自动更新行情与市值；持仓数量仍按周度手动快照维护，因此是「数量滞后、估值实时」。2026-10-18 起「全部持仓」表在每个日期下增加当日合计，便于逐日对账。</p>
+            <p>截至 2026-10-25 快照（价格更新于 2026-10-28）：全部持仓 <strong>0.02724339 / 0.1 BTC（27.24%）</strong>，约合 <strong>¥14,673.62 / $2,200.78</strong>，距离目标还差 0.07275661 BTC；全部持仓均价 <strong>$69,572.9/BTC</strong>（Binance $69,618.9、OKX $69,545.6）。持仓全部在交易所，无冷钱包部分。</p>
             <p>仓库：<a href="https://github.com/SayangChun/0.1BTC" target="_blank" rel="noopener noreferrer">github.com/SayangChun/0.1BTC</a></p>
             <p class="ai-note">说明：项目说明与进度数字根据仓库 README、数据文件与 2026-09-06～10-13 提交由 AI 整理扩写；持仓口径与托管方式以仓库最新数据为准。后续以 README 自动生成段为准。</p>
         </div>

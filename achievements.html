@@ -12,13 +12,42 @@
     <div class="container">
         <h1>成果</h1>
 
+        <div class="skills-box">
+            <span class="skills-box-title">本站子站 · 挂在这个域名下，点开即用</span>
+            <ul class="skills-list">
+                <li><strong><a href="https://sayangchun.github.io/FIRE-Progress/">FIRE 进度看板</a>：</strong>比特币 + 标普500 + 纳指100 三项资产的 FIRE 进度、收益曲线与生活规划，每日自动更新。</li>
+                <li><strong><a href="https://sayangchun.github.io/sp500-dca/">标普500 定投看板</a>：</strong>每日定投的净值、份额、盈亏与累计曲线，按境内基金实际开放申购口径计算。</li>
+                <li><strong><a href="https://sayangchun.github.io/ahr999-3D/">ahr999-3D</a>：</strong>2026 重拟合 ahr999 指标的实时可视化，纯客户端计算，服务「定投 / 屏蔽噪音」。</li>
+            </ul>
+        </div>
+
         <div class="entry">
             <div class="entry-header">
                 <a class="entry-title" href="posts/achievements/fire-progress.html">FIRE-Progress · FIRE 进度看板</a>
                 <span class="entry-date">2026年10月</span>
             </div>
             <div class="entry-content">
-                <p>把「离 FIRE 还有多远」做成每天自动更新的看板：统计比特币、标普500基金与应急金三项<strong>长期不动用</strong>资产，Actions 每小时轮询持仓仓库与行情并回写 README。FIRE 目标由生活规划<strong>逐项推导</strong>（19 项 ¥1,507/月 × 12 ÷ 4.3% 提取率），当前资产 ¥14,936.29、完成度 3.551%；附进度曲线、投入 / 市值与收益率双面板曲线。</p>
+                <p>把「离 FIRE 还有多远」做成每天自动更新的看板：统计比特币、标普500基金与纳指100基金三项<strong>长期不动用</strong>资产，Actions 每小时轮询持仓来源与行情，回写 README 并生成静态页。目标是<strong>咖啡师 FIRE</strong> 口径——「（月开销 − 兼职净收入）× 12 ÷ 提取率」，兼职净收入 ¥723/月抵扣后组合只需覆盖 ¥738/月，目标 ¥205,953.49；当前资产 ¥20,125.39、完成度 <strong>9.772%</strong>。另有<strong>两段式路线</strong>（牡丹江独立期 → 北京家庭期）与五份配套文档。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <a class="entry-title" href="posts/achievements/sp500-premium.html">sp500-premium · 标普500场内基金真实溢价率</a>
+                <span class="entry-date">2026年10月</span>
+            </div>
+            <div class="entry-content">
+                <p>只看标普500指数的场内基金<strong>真实溢价率</strong>看板。QDII 净值按美股交易日披露、次日晚间才公布，而 A 股白天先交易——券商 App 的「溢价率」拿今天场内价除以昨晚净值，隔夜美股涨跌完全没算进去。项目用<strong>标普500期货</strong>把这段时差补上（隔夜段走现货日线、今日段走 E-mini 期货），实测与 HaoETF 官方口径误差 ≤0.1%。跟踪 5 只 ETF / LOF，纯浏览器端秒级计算，无服务端。</p>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <a class="entry-title" href="posts/achievements/edge-better.html">Edge-Better · Edge 书签新标签页增强</a>
+                <span class="entry-date">2026年10月</span>
+            </div>
+            <div class="entry-content">
+                <p>让 Edge 书签<strong>在新标签页打开、当前页不被覆盖</strong>的浏览器扩展：复刻一个闭源插件（2.1 万+ 用户）并修掉它的问题，补上覆盖空白新标签页、自定义空白页正则、中键不多开、卸载安全等能力。技术核心是 MV3 的 Service Worker 30 秒空闲回收——点书签时冷启动会让导航先提交，项目用<strong>三层防线</strong>（alarms 保活 / 零 await 热路径 / 冷路径走 bfcache）解决「点书签导致当前页刷新」。</p>
             </div>
         </div>
 
@@ -28,7 +57,7 @@
                 <span class="entry-date">2026年9月</span>
             </div>
             <div class="entry-content">
-                <p>把境内跟踪标普500的 10 只标的从中期报告穿透出「真实参与率 / 加权综合费率 / 场内溢价」，再做五维加权打分：前四名全是场内 ETF（华夏 91.0 / 博时 90.1 / 南方 87.5 / 国泰 84.0），与场外之间存在约 26 分断层；场外没有一只做到 100% 参与指数。含手写 SVG 图表与在线版。</p>
+                <p>把境内跟踪标普500的 10 只标的从中期报告穿透出「真实参与率 / 加权综合费率 / 场内溢价」，再做五维加权打分。2026-10-22 滚动更新后：<strong>博时 ETF 登顶</strong>（89.70），华夏从第 1 掉到第 4（91.04 → 74.14）；四只场内 ETF 溢价扩大到 <strong>6.83%–8.15%</strong>，溢价调整后的有效参与率降到 92.3%–93.5%；国泰 ETF 暂停申购。含手写 SVG 图表与在线版。</p>
             </div>
         </div>
 
@@ -108,7 +137,7 @@
                 <span class="entry-date">2026年7月</span>
             </div>
             <div class="entry-content">
-                <p>GitHub README 驱动的囤币进度：目标 0.1 BTC，<strong>进度按全部持仓合计计算</strong>，不只算提现到冷钱包的部分；记录全部持仓快照与分账户均价，CSV + 脚本刷新进度条、SVG 累计曲线与明细，并显示当前人民币市值，无独立站点。持仓目前<strong>全部存放于交易所</strong>（Binance / OKX），当前 <strong>0.02553981 BTC（25.54%）</strong>。</p>
+                <p>GitHub README 驱动的囤币进度：目标 0.1 BTC，<strong>进度按全部持仓合计计算</strong>，不只算提现到冷钱包的部分；记录全部持仓快照与分账户均价，CSV + 脚本刷新进度条、SVG 累计曲线与明细，并显示当前人民币市值，无独立站点。持仓目前<strong>全部存放于交易所</strong>（Binance / OKX），当前 <strong>0.02724339 BTC（27.24%）</strong>。</p>
             </div>
         </div>
 
